@@ -1,27 +1,29 @@
 
-# donde: name es el nombre del personaje
-#       health es la salud
-#       armor es el valor de armadura, el cual disminuirá el daño entrante
-#       str la fuerza, multiplicador a la hora de atacar
-#       agi la agilidad, multiplicador a la hora de atacar primero y huir
-#       int la inteligencia, multiplicador a la hora de atacar con magia
-#       faith la fé, multiplicador a la hora de usar hechizo/habilidad especial
-#       acc la puntería, multiplicador a la hora de usar un arma de rango (arco)
-#       res_magic la resistencia magica, reduce el daño entrante de ataques magicos
-#       res_physc la resistencia fisica, reduce el daño entrante de ataques fisicos
-#       money el dinero del personaje
-#       lvl el nivel actual, si jugador sube de nivel adquiere 1 punto a invertir en una de los rasgos anteriores
-#       exp la experiencia, al llegar a un cierto valor, aumente el nivel en 1 y la experiencia vuelve a 0.
-#       armor_items_on la cantidad de items de armadura equipados, no puede tener más de 3 a la vez y deben ser de
+# donde:
+#       name = nombre del personaje
+#       health = salud
+#       armor = armadura    disminuirá el daño entrante
+#       str = fuerza        multiplicador a la hora de atacar
+#       agi = agilidad      multiplicador a la hora de atacar primero/intentar huir
+#       int = inteligencia  multiplicador a la hora de atacar con magia
+#       faith = fé          multiplicador a la hora de usar hechizo/habilidad especial
+#       acc = puntería      multiplicador a la hora de atacar a distancia (arco)
+#       res_magic = resistencia magica      reduce el daño entrante de ataques magicos
+#       res_physc = resistencia fisica      reduce el daño entrante de ataques fisicos
+#       money = dinero del personaje
+#       lvl = nivel actual  si jugador sube de nivel adquiere 1 punto a invertir en una de los rasgos anteriores
+#       exp = experiencia   al llegar a un cierto valor, aumenta el nivel en 1 y la experiencia vuelve a 0
+#
+#       armor_items_on = cantidad de items de armadura equipados, no puede tener más de 3 a la vez y deben ser de
 #       distinto tipo (jugador no puede tener 2 pecheras a la vez)
 #
-#       weapon_items_on la cantidad de armas equipadas, no puede tener más de una cierta cantidad de armas y deben ser
+#       weapon_items_on = cantidad de armas equipadas, no puede tener más de una cierta cantidad de armas y deben ser
 #       de distinto tipo (no puede tener dos escudos a la vez, por ejemplo)
 
 
 class Character:
-    def __init__(self, name="", health=0, armor=0, str=0, agi=0, int=0, faith=0,
-                 acc=0, res_magic=0, res_phys=0, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0):
+    def __init__(self, name, health, armor, str, agi, int, faith,
+                 acc, res_magic, res_phys, money, lvl, exp, armor_items_on, weapon_items_on):
         self.name = name
         self.health = health
         self.armor = armor
