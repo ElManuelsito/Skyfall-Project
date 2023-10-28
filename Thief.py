@@ -8,7 +8,7 @@ from Character import Character
 
 class Thief(Character):
     def __init__(self,name):
-        super().__init__(name,150,20,18,20,0,5,10,8,10,0,0,0,0,0)
+        super().__init__(ame,health=150,armor=20,str=18,agi=20,int=0,faith=5,acc=10,res_magic=8,res_phys=10,money=0,lvl=0,exp=0,armor_items_on=0,weapon_items_on=0)
 
     def skill_a(self):
         pass #Sigilo
