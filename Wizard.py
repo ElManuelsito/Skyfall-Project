@@ -1,6 +1,6 @@
 from Character import Character
 
-# class Mage(Character):
+# class Mag(Character):
 #     def __init__(self, name):
 #         super().__init__(name, health, armor, str, agi, int, faith,
 #                  acc, res_magic, res_phys, money, lvl, exp, armor_items_on, weapon_items_on)
@@ -18,6 +18,6 @@ class Mage(Character):
         pass #Rayo
 
 
-player = Mage("Roge.2000")
+player = Wizard("Roge.2000")
 player.skill_a()
 
