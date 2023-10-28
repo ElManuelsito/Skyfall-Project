@@ -1,6 +1,6 @@
 from Character import Character
 
-# class Mag(Character):
+# class Wizard(Character):
 #     def __init__(self, name):
 #         super().__init__(name, health, armor, str, agi, int, faith,
 #                  acc, res_magic, res_phys, money, lvl, exp, armor_items_on, weapon_items_on)
