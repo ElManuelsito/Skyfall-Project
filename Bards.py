@@ -15,8 +15,11 @@ class Bard(Character):
         pass #Helear
 
     def skill_b(self):
-        pass #De buff de veneno 
+        pass #provoca un debuff de veneno al enemigo.
+
+    def skill_c(self):
+        pass #Ispiracion de valentia(provoca un aumento de vida)
 
 
 player = Bard("Saint.e")
-player.skill_b()
+player.skill_a()
