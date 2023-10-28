@@ -12,11 +12,11 @@ class Sorcerer(Character):
                          res_phys=4, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
     def skill_a(self):
-        pass #escudo de llama 
+        pass #Invoca criaturas para atacar 
 
     def skill_b(self):
-        pass #Invocacion de demonios 
+        pass #Hace que el enemigo se dañe asi mismo. 
 
 
 player = Mage("Darked.D")
-player.skill_B()
+player.skill_a()
