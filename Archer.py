@@ -15,7 +15,10 @@ class Archer(Character):
         pass #Lluvia de flechas
 
     def skill_b(self):
-        pass #Flecha de fuego 
+        pass #Flecha de fuego
+        
+    def skill_c(self):
+        pass #Aumenta precisión
 
 
 player = Archer("Arrow.x")
