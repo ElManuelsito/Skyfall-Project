@@ -3,6 +3,7 @@
 import Character
 import Item_index
 import Constants
+import pickle
 
 
 class GameManager:
@@ -15,5 +16,10 @@ class GameManager:
     def worldnpc(self):
         pass
 
-    def battle(self,option):
+    def battle(self):
         pass
+
+
+# Testeando
+print(Constants.player_inv["weapon_r"])
+Constants.player_inv["weapon_r"] = "Espada de Tenshi"
