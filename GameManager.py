@@ -16,7 +16,8 @@ class GameManager:
     def worldnpc(self):
         pass
 
-    def battle(self):
+    def battle(self, enemy):
+
         pass
 
 

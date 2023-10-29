@@ -40,4 +40,5 @@ class Character:
         self.armor_items_on = armor_items_on
         self.weapon_items_on = weapon_items_on
 
-
+    def takeDamage(self, enemy):
+        self.health = self.health - (enemy.dmg - (enemy.dmg * (self.armor / 200)))

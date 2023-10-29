@@ -20,11 +20,9 @@ class Warrior(Character):
                          res_phys=12, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
     def skill_a(self):
-        print(self.str, self.name, self.res_phys)
+        pass
 
     def skill_b(self):
         pass
 
 
-player = Warrior("Juan.Pablo2004")
-player.skill_a()
