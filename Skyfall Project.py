@@ -3,4 +3,3 @@
 from GameManager import GameManager
 skyfall = GameManager()
 skyfall.initializeGame()
-
