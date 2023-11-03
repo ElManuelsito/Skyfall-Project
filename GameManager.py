@@ -27,11 +27,12 @@ class GameManager:
             self.createCharacter()
 
     def createCharacter(self):
-        # metodo que ocurre al elegir "nuevo juego" en el menu principal, ayuda al usuario a crear su clase y spawnpoint
+        # método que es llamado al elegir "nuevo juego" en el menu principal
+        # el usuario podrá crear su personaje y elegir su spawnpoint
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         self.showOnScreen(Constants.CHARACTER_CREATION_NAME_MESSAGE)
         while True:
-            # while para prevenir que el usuario ingrese un nombre no valido
+            # while para prevenir que el usuario ingrese un nombre no válido
             player_name = self.getPlayerChoice(Constants.PLAYER_PROMPT_NAME)
             if player_name.isalpha():
                 break
@@ -44,70 +45,70 @@ class GameManager:
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         while True:
             self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-            # while principal para prevenir que el usuario ingrese una clase o caracter no valido/a
+            # while principal para prevenir que el usuario ingrese una clase o carácter no válido/a
             self.showOnScreen(Constants.CHARACTER_CREATION_ALL_CLASSES)
             player_class_choice = self.getPlayerChoice()
-            # se le asigna a una variable porque sino estaria preguntando "Opcion: " una y otra vez en cada elif
-            if player_class_choice == "1":      # Opcion 1 corresponde a Arquero
-                # Cl_Archer se refiere al modulo y .Archer a la clase. Esto aplica para los otros player_class_choice.
+            # se le asigna a una variable porque si no estaría preguntando "Opción: " una y otra vez en cada elif
+            if player_class_choice == "1":      # Opción 1 corresponde a Arquero
+                # Cl_Archer se refiere al módulo y .Archer a la clase. Esto aplica para los otros player_class_choice.
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_ARCHER,
                                                                 Cl_Archer.Archer(player_name))
                 # si el usuario ingresó si, entonces variable player existe y es instancia. De lo contrario será None.
                 if player:
-                    # este chequeo no es funcion ya que no hay forma de retornar un break o continue
+                    # este chequeo no es función, ya que no hay forma de retornar un break o continue
                     break
                 else:
                     continue
-            elif player_class_choice == "2":    # Opcion 2 corresponde a Mago
+            elif player_class_choice == "2":    # Opción 2 corresponde a Mago
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WIZARD,
                                                                 Cl_Wizard.Wizard(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "3":    # Opcion 3 corresponde a Guerrero
+            elif player_class_choice == "3":    # Opción 3 corresponde a Guerrero
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WARRIOR,
                                                                 Cl_Warrior.Warrior(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "4":    # Opcion 4 corresponde a Ladron
+            elif player_class_choice == "4":    # Opción 4 corresponde a Ladrón
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_THIEF,
                                                                 Cl_Thief.Thief(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "5":    # Opcion 5 corresponde a Hechizero
+            elif player_class_choice == "5":    # Opción 5 corresponde a Hechicero
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_SORCERER,
                                                                 Cl_Sorcerer.Sorcerer(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "6":    # Opcion 6 corresponde a Paladin
+            elif player_class_choice == "6":    # Opción 6 corresponde a Paladin
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_PALADIN,
                                                                 Cl_Paladin.Paladin(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "7":    # Opcion 7 corresponde a Nigromante
+            elif player_class_choice == "7":    # Opción 7 corresponde a Nigromante
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_NECROMANCER,
                                                                 Cl_Necro.Necromancer(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "8":    # Opcion 8 corresponde a Tanque
+            elif player_class_choice == "8":    # Opción 8 corresponde a Tanque
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_TANK,
                                                                 Cl_Tank.Tank(player_name))
                 if player:
                     break
                 else:
                     continue
-            elif player_class_choice == "9":    # Opcion 9 corresponde a Bardo
+            elif player_class_choice == "9":    # Opción 9 corresponde a Bardo
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_BARD,
                                                                 Cl_Bard.Bard(player_name))
                 if player:
@@ -121,23 +122,23 @@ class GameManager:
                 self.showOnScreen(Constants.CHARACTER_CREATION_CLASS_MESSAGE_INSIST)
         del player_class_choice
         del player_name
-        # se eliminan de la memoria las variables que ya no haran falta por el resto de la ejecucion del juego
-        # faltaria aca abajo empezar a escribir la parte de seleccion del spawnpoint
+        # se eliminan de la memoria las variables que ya no harán falta por el resto de la ejecución del juego
+        # faltaría aca abajo empezar a escribir la parte de selección del spawnpoint
 
     def battle(self, enemy):
         pass
 
     def confirmPlayerClassChoiceAndAssign(self, class_description, class_type_with_player_name_as_argument):
         #
-        # Metodo verifica que el usuario elige a la clase descripta, asegurando una respuesta esperada ("si" o "no")
-        # <constante de descripcion de la clase correspondiente a player_class_choice> pasada como primer argumento,
+        # Método verifica que el usuario elige a la clase descrita, asegurando una respuesta esperada ("si" o "no")
+        # <constante de descripción de la clase correspondiente a player_class_choice> pasada como primer argumento,
         # por ejemplo la constante Constantes.CHARACTER_DESCRIPTION_ARCHER
         #
-        # Metodo devuelve la clase a asignar a la variable <player> (fuera de este método) si el usuario elige "si"
-        # (la clase a asignar es pasada como segundo argumento, debe ser paquete.modulo(<variable del nombre
+        # Método devuelve la clase a asignar a la variable <player> (fuera de este método) si el usuario elige "si"
+        # (la clase a asignar es pasada como segundo argumento, debe ser paquete.módulo(<variable del nombre
         # del jugador>) donde esa <variable del nombre> es pasada como argumento para el constructor de la clase
         # que se requiera, por ejemplo Archer.Archer(player_name)
-        # Tambien se puede decir que este metodo devuelve el segundo argumento para instanciar dicho argumento (clase)
+        # También se puede decir que este método devuelve el segundo argumento para instanciar dicho argumento (clase)
         #
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         self.showOnScreen(class_description)
