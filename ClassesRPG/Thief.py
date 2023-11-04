@@ -20,4 +20,17 @@ class Thief(Character):
     def skill_c(self):
         pass #Ataque rapido
 
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_THIEF
+
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_THIEF
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_THIE
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_THIE
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_THIE
 
