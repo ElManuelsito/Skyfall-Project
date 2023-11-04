@@ -8,8 +8,14 @@
 # -- Testeando pickle --
 # import pickle
 #
-# player_inv = {"weapon_1": False, "weapon_2": False, "helmet": False, "breastplate": False, "chausses": False,
-#               "gauntlets": False, "money": 0}
+# player_info = {"weapon_1": False,
+#                "weapon_2": False,
+#                "helmet": False,
+#                "breastplate": False,
+#                "chausses": False,
+#                "gauntlets": False,
+#                "money": 0,
+#                "location": None}
 # with open("savefile.pickle", "wb") as f:
 #     pickle.dump(player_inv, f, protocol=0)
 # f.close()
@@ -30,24 +36,27 @@ PLAYER_PROMPT_NAME = "Nombre: "
 PRESS_ENTER_TO_CONTINUE = "\nPresiona Enter para continuar...\n"
 PRESS_ENTER_TO_RETURN = "\nPresiona Enter para volver...\n"
 
-# [ OPTIONS AND MESSAGES ]
+# [ OPTIONS, MESSAGES AND WARNINGS ]
 WELCOMING_MESSAGE = "\n\n                    ~ Skyfall ~\nSelecciona una opción ingresando su número por teclado.\n"
 MAIN_MENU_OPTIONS = "1. Nuevo juego\n2. Continuar\n3. Opciones\n4. Instrucciones\n5. Salir\n"
-PLAYER_PROMPT_SET_FOR_YES = {"si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}     # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
-PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                   # misma estructura, pero para "No"
-TIME_BETWEEN_MESSAGES = 1.1
-TIME_BETWEEN_WARNINGS = 1.8
+PLAYER_PROMPT_SET_FOR_YES = {"s", "S", "si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}   # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
+PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                           # misma estructura, pero para "No"
+TIME_BETWEEN_MESSAGES = 0.85
+TIME_BETWEEN_WARNINGS = 3
+
+INSTRUCTIONS_MENU = "\nBienvenido a Skyfall! Para comenzar por favor lea estas instrucciones:\n1. Navegar el menú\n2. Navegar el mundo\n 3. Combate\n 4. Items\n"
+TIPS = ["Tip: para abrir el menu de opciones durante el combate, ingresar \"pausa\"."]
 
 CHARACTER_CREATION_NAME_MESSAGE = "\nComienza creando tu personaje!\n\nPrimero ingresa tu nombre (recuerda que solo puedes utilizar caracteres alfabéticos y sin espacios)"
-CHARACTER_CREATION_INVALID_NAME = "\nNombre no valido! Solo utiliza caracteres alfabéticos sin espacios!\n"
-CHARACTER_CREATION_NAME_MESSAGE_INSIST = "Por favor ingresa tu nombre"
+WARNING_MESSAGE_INVALID_NAME = "Nombre no valido! Solo utiliza caracteres alfabéticos sin espacios!"
 
 CHARACTER_CREATION_CLASS_MESSAGE = "\nAhora selecciona una clase (solo utiliza números del 1-9)"
-CHARACTER_CREATION_INVALID_CLASS = "\nClase no valida! Solo utiliza un número del 1-9!\n"
-CHARACTER_CREATION_CLASS_MESSAGE_INSIST = "Por favor selecciona una clase"
-CHARACTER_CREATION_ALL_CLASSES = "\n1. Arquero\n2. Mago\n3. Guerrero\n4. Ladrón\n5. Hechicero\n6. Paladín\n7. Nigromante\n8. Tanque\n9. Bardo\n"
+WARNING_MESSAGE_INVALID_CLASS = "Clase no valida! Solo utiliza un número del 1-9!"
+
 CHARACTER_CREATION_CLASS_CONFIRM = "¿Deseas usar esta clase? (si/no)"
-CHARACTER_CREATION_CLASS_INVALID_CONFIRM = "\nPor favor ingresa solamente \"si\" o \"no\".\n"
+WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION = "Por favor ingresa solamente \"si\" o \"no\"."
+
+CHARACTER_CREATION_ALL_CLASSES = "\n1. Arquero\n2. Mago\n3. Guerrero\n4. Ladrón\n5. Hechicero\n6. Paladín\n7. Nigromante\n8. Tanque\n9. Bardo\n"
 
 CHARACTER_CREATION_DESCRIPTION_ARCHER = "\n\n|| Arquero ||\nSalud: 120\nDefensa: 20\nMana: 20\nFuerza: 10\nAgilidad: 18" \
                                         "\nInteligencia: 7\nFé: 8\nPrecisión: 19\nResistencia mágica: 7%\nResistencia física: 5%" \
@@ -99,10 +108,9 @@ CHARACTER_CREATION_DESCRIPTION_BARD = "\n\n|| Bardo ||\nSalud: 80\nDefensa: 10\n
                                         "\n\nDescripción:\n Bardo es un elegante luchador que utiliza el poder de la canción para mejorar a sus aliados y derrotar a sus enemigos.\n" \
                                       " Abriéndose paso entre sus enemigos con una variedad de ataques llamativos, el Bardo inspira a sus aliados a nunca bajar los brazos, dándoles ánimo y mejoras para seguir luchando.\n"
 
-CHARACTER_CREATION_REQUEST_WORLD_MESSAGE = "Para finalizar, elige tu punto de aparición"
-CHARACTER_CREATION_REQUEST_WORLD_SPAWNPOINT = "ingresar nombre de mundos acá"
-INSTRUCTIONS_MENU = "\nBienvenido a Skyfall! Para comenzar por favor lea estas instrucciones:\n1. Navegar el menú\n2. Navegar el mundo\n 3. Combate\n 4. Items\n"
-TIPS = ["Tip: para abrir el menu de opciones durante el combate, ingresar \"pausa\"."]
+CHARACTER_CREATION_WORLD_MESSAGE = "\nPara finalizar, elige tu punto de aparición"
+CHARACTER_CREATION_WORLD_SPAWNPOINTS = "\n1. Muldraugh\n2. Riverside\n"
+WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE = "No existe ese lugar! Por favor elige donde quieres aparecer"
 
 
 # -------------------- Combat Related --------------------
@@ -115,13 +123,77 @@ SPECIAL_ATTACK_CONFIRM = "¿Deseas usar esta habilidad? (si/no)"
 # [ ARCHER ]
 COMMON_ATTACKS_ARCHER = "\nAtaques Comunes:\n1. Disparo Certero      2. Disparo Rápido\n"
 SPECIAL_ATTACKS_ARCHER = "\nHabilidades:\n1. Lluvia de flechas\n2. Flecha de fuego\n3. Ojo de Águila\n"
-SPECIAL_ATTACK_A_DESC = "Lluvia de flechas:\n+ Daña multiples enemigos a la vez\n- Utiliza más Mana de lo normal\n"
-SPECIAL_ATTACK_B_DESC = "Flecha de fuego:\n+ Enemigo recibe daño por turno dependiendo de tu INT\n+ Más daño de lo normal\n- 20% Chance de no aplicar el efecto\n"
-SPECIAL_ATTACK_B_CHANCE = 80
-SPECIAL_ATTACK_C_DESC = "Ojo de Águila:\n+ Aumenta tu precisión por un turno\n"
+SPECIAL_ATTACK_A_DESC_ARCH = "Lluvia de flechas:\n+ Daña multiples enemigos a la vez\n- Utiliza más Mana de lo normal\n"
+SPECIAL_ATTACK_B_DESC_ARCH = "Flecha de fuego:\n+ Enemigo recibe daño por turno dependiendo de tu INT\n+ Más daño de lo normal\n -20% Chance de no aplicar el efecto\n"
+SPECIAL_ATTACK_B_CHANCE_ARCH = 80
+SPECIAL_ATTACK_C_DESC_ARCH = "Ojo de Águila:\n+ Aumenta tu precisión por un turno\n"
 
+#[Wizard]
+COMMON_ATTACKS_WIZARD = "\nAtaques Comunes:\n1. Aurora Magica      2.Bastonazo\n"
+SPECIAL_ATTACKS_WIZARD = "\nHabilidades:\n1. Bola de Fuego\n2. LLuvida de fuego\n3. Congelamiento \n"
+SPECIAL_ATTACK_A_DESC_WIZ = "Bola de Fuego:\n+ Mete mucho daño a un solo objetivo\n- Coste Intermedio de Mana\n"
+SPECIAL_ATTACK_B_DESC_WIZ = "Lluvia de Fuego:\n+ En una Zona circular cae una lluvia de fuego, donde mete daño en Area y afectando a mas de un enemigo\n+ Coste Alto de Mana\n"
+SPECIAL_ATTACK_C_DESC_WIZ = "Congelamiento:\n+ En una zona crea un escarcha de hielo provocando que los enemigos queden congelado y aturdido\n+ Coste Intermedio de Mana"
+SPECIAL_ATTACK_C_CHANCE_WIZ = 70
 
+#[Warrior]
+COMMON_ATTACKS_WARRIOR = "\nAtaques Comunes:\n1.Basico a Espada    2.Basico a Hacha\n"
+SPECIAL_ATTACKS_WARRIOR = "\nHabilidades:\n1. Corte \n2. Spiral Splash \n3. Multiples cortes  \n"
+SPECIAL_ATTACK_A_DESC_WARR = "Corte:\n+ Provoca un daño intermedio a un objetivo \n- Coste bajo de Mana\n"
+SPECIAL_ATTACK_B_DESC_WARR = "Spiral Splash:\n+ Genera un espiral de fuego en la espada provocando daño a un objetivo\n+ Coste intermedio de Mana\n"
+IAL_ATTACK_B_CHANCE_WARR = 50
+SPECIAL_ATTACK_C_DESC_WARR = "Multix Cortes:\n+ Provoca multiples cortes a un objetivo, provocando mucho daño\n+ Coste Alto de mana"
+
+#[THIEF]
+COMMON_ATTACKS_THIEF = "\nAtaques Comunes:\n1.Basico a Daga"
+SPECIAL_ATTACKS_THIEF = "\nHabilidades:\n1.Golpe bajo \n2. Corte desgarrador \n3. Golpe en los Riñones\n"
+SPECIAL_ATTACK_A_DESC_THIE = "Golpe Bajo:\n+ Provoca un daño intermedio a un objetivo golpeando en los puntos bajo \n- Coste bajo de Mana\n"
+SPECIAL_ATTACK_B_DESC_THIE = "Corte desgarrador:\n+  Provoca un corte con sangrado \n+ Coste intermedio de Mana\n"
+SPECIAL_ATTACK_B_CHANCE_THIE = 70
+SPECIAL_ATTACK_C_DESC_THIE = "Golpe en los Riñones:\n+ Provoca mucho daño al objetivo logrando paralizarlo \n+ Coste Alto de mana"
+SPECIAL_ATTACK_C_CHANCE_THIE = 40
+
+#[SORCERER]
+COMMON_ATTACKS_SORC = "\nAtaques Comunes:\n1.Aurora magica"
+SPECIAL_ATTACKS_SORC = "\nHabilidades:\n1.Magia Control \n2. Invocacion bestia \n3. Fear\n"
+SPECIAL_ATTACK_A_DESC_SORC = "Magia Control :\n+ Controla por un breve momento al enemigo haciendo que se lastime el mismo \n- Coste intermedio de Mana\n"
+SPECIAL_ATTACK_B_DESC_SORC = "Invocacion Bestia:\n+ Invoca a una criatura que le ayuda a luchar provocando daño a un objetivo \n+ Coste Alto de Mana\n"
+SPECIAL_ATTACK_C_DESC_SORC = "Fear:\n+ Provoca un miedo al enemigo que hace que no ataque por un breve momento \n+ Coste intermedio  de mana"
+SPECIAL_ATTACK_C_CHANCE_SORC = 45
+
+#[Paladin]
+COMMON_ATTACKS_PAL = "\nAtaques Comunes:\n1.Ataque Basico con Espada"
+SPECIAL_ATTACKS_PAL = "\nHabilidades:\n1.Sentencia \n2. Destello de luz  \n3. Golpe de Cruzado \n"
+SPECIAL_ATTACK_A_DESC_PAL = "Sentencia:\n+ Juzga al enemigo provocandole un daño con la espada sagrada \n- Coste Bajo de Mana\n"
+SPECIAL_ATTACK_B_DESC_PAL = "Destello de Luz:\n+ Invoca una luz que cae en el provocando curarce un 20% de su vida faltante \n+ Coste Alto de Mana\n"
+SPECIAL_ATTACK_C_DESC_PAL = "Golpe de Cruzada:\n+ Golpea al objetivo provocando un gran daño y aturdiendolo brevemente\n+ Coste intermedio  de mana"
+SPECIAL_ATTACK_C_CHANCE_PAL = 50
+
+#[NECROMANCER]
+COMMON_ATTACKS_NEC = "\nAtaques Comunes:\n1.Magia Dark   2.Basico con Daga"
+SPECIAL_ATTACKS_NEC = "\nHabilidades:\n1.Invoacion NO-MUERTO \n2. Invoaciones Infernales \n3. Descomposición \n"
+SPECIAL_ATTACK_A_DESC_NEC = "Invoacion NO-MUERTO:\n+ Invoca personas sin vida para atacar a un objetivo \n- Coste Bajo de Mana\n"
+SPECIAL_ATTACK_B_DESC_NEC = "Invoacion Infernal:\n+ Invoca Bestias del Infierno para dañar todo lo que se ponga por delante \n+ Coste Alto de Mana\n"
+SPECIAL_ATTACK_C_DESC_NEC = "Descomposición:\n+ Lanza una maldicion que hace que el objetivo se descomponga como si estuviera envenenado\n+ Coste intermedio de mana"
+SPECIAL_ATTACK_C_CHANCE_NEC = 50
+
+#[TANK]
+COMMON_ATTACKS_TANK = "\nAtaques Comunes:\n1.Basico con Espada"
+SPECIAL_ATTACKS_TANK = "\nHabilidades:\n1.Power up \n2. Focus \n3. Desesperacion \n"
+SPECIAL_ATTACK_A_DESC_TANK = "Power UP:\n+ Hace que su ataque aumente \n- Coste Bajo de Mana\n"
+SPECIAL_ATTACK_B_DESC_TANK = "Focus:\n+ Se concentra aumentando su defensa a todo tipo de daño \n+ Coste bajo de Mana\n"
+SPECIAL_ATTACK_C_DESC_TANK = "Desesperacion:\n+ Cuando ya se esta por rendir entra en su desesperacion aumentando drasticamente su defensa y daño \n+ Coste intermedio de mana"
+
+# [BARD]
+COMMON_ATTACKS_BARD = "\nAtaques Comunes:\n1. Basico Melodico   2. Rafaga melodica\n"
+SPECIAL_ATTACKS_BARD = "\nHabilidades:\n1.Ispiracion \n2. Curar \n3. Remover Efectos\n"
+SPECIAL_ATTACK_A_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \n- Coste Bajo de mana \n"
+SPECIAL_ATTACK_B_BARD = "Helear:\n+ Restaura un 40HP de vida \n+ Coste Intermedio de Mana \n"
+SPECIAL_ATTACK_C_DESC_BAR = "Remover Efecto:\n+ Remueve cualquier efecto que le hallan tirado\n+ Coste Intermedio de Mana \n"
+
+#
 # print(COMBAT_OPTIONS)
 # input(USER_PROMPT)
 # print(COMMON_ATTACKS_ARCHER)
 # input(USER_PROMPT)
+

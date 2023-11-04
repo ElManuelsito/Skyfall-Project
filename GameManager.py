@@ -14,14 +14,16 @@ import pickle
 import time
 import random
 
+global player_info
+
 
 class GameManager:
     def __init__(self):
         pass
 
     def initializeGame(self):
-        self.showOnScreen(Constants.WELCOMING_MESSAGE)
-        self.showOnScreen(Constants.MAIN_MENU_OPTIONS)
+        self.showMessage(Constants.WELCOMING_MESSAGE)
+        self.showMessage(Constants.MAIN_MENU_OPTIONS)
         player_main_menu_choice = self.getPlayerChoice()
         if player_main_menu_choice == "1":
             self.createCharacter()
@@ -30,23 +32,21 @@ class GameManager:
         # método que es llamado al elegir "nuevo juego" en el menu principal
         # el usuario podrá crear su personaje y elegir su spawnpoint
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-        self.showOnScreen(Constants.CHARACTER_CREATION_NAME_MESSAGE)
+        self.showMessage(Constants.CHARACTER_CREATION_NAME_MESSAGE)
         while True:
             # while para prevenir que el usuario ingrese un nombre no válido
             player_name = self.getPlayerChoice(Constants.PLAYER_PROMPT_NAME)
             if player_name.isalpha():
                 break
             else:
-                self.showOnScreen(Constants.CHARACTER_CREATION_INVALID_NAME)
-                self.waitSeconds(Constants.TIME_BETWEEN_WARNINGS)
-                self.showOnScreen(Constants.CHARACTER_CREATION_NAME_MESSAGE_INSIST)
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_NAME)
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-        self.showOnScreen(Constants.CHARACTER_CREATION_CLASS_MESSAGE)
+        self.showMessage(Constants.CHARACTER_CREATION_CLASS_MESSAGE)
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         while True:
-            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
             # while principal para prevenir que el usuario ingrese una clase o carácter no válido/a
-            self.showOnScreen(Constants.CHARACTER_CREATION_ALL_CLASSES)
             player_class_choice = self.getPlayerChoice()
             # se le asigna a una variable porque si no estaría preguntando "Opción: " una y otra vez en cada elif
             if player_class_choice == "1":      # Opción 1 corresponde a Arquero
@@ -58,6 +58,8 @@ class GameManager:
                     # este chequeo no es función, ya que no hay forma de retornar un break o continue
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "2":    # Opción 2 corresponde a Mago
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WIZARD,
@@ -65,6 +67,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "3":    # Opción 3 corresponde a Guerrero
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WARRIOR,
@@ -72,6 +76,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "4":    # Opción 4 corresponde a Ladrón
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_THIEF,
@@ -79,6 +85,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "5":    # Opción 5 corresponde a Hechicero
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_SORCERER,
@@ -86,6 +94,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "6":    # Opción 6 corresponde a Paladin
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_PALADIN,
@@ -93,6 +103,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "7":    # Opción 7 corresponde a Nigromante
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_NECROMANCER,
@@ -100,6 +112,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "8":    # Opción 8 corresponde a Tanque
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_TANK,
@@ -107,6 +121,8 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "9":    # Opción 9 corresponde a Bardo
                 player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_BARD,
@@ -114,16 +130,30 @@ class GameManager:
                 if player:
                     break
                 else:
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             else:
-                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                self.showOnScreen(Constants.CHARACTER_CREATION_INVALID_CLASS)
-                self.waitSeconds(Constants.TIME_BETWEEN_WARNINGS)
-                self.showOnScreen(Constants.CHARACTER_CREATION_CLASS_MESSAGE_INSIST)
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_CLASS)
         del player_class_choice
         del player_name
-        # se eliminan de la memoria las variables que ya no harán falta por el resto de la ejecución del juego
-        # faltaría aca abajo empezar a escribir la parte de selección del spawnpoint
+        # se eliminan de memoria las variables que ya no harán falta por el resto de la ejecución del juego
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showMessage(Constants.CHARACTER_CREATION_WORLD_MESSAGE)
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showMessage(Constants.CHARACTER_CREATION_WORLD_SPAWNPOINTS)
+        while True:
+            player_spawnpoint_choice = self.getPlayerChoice()
+            if player_spawnpoint_choice == "1":     # Opción 1 Corresponde a Muldraugh
+                player_spawnpoint_choice = "muldraugh"
+                break
+            elif player_spawnpoint_choice == "2":   # Opción 2 corresponde a Riverside
+                player_spawnpoint_choice = "riverside"
+                break
+            else:
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE)
+
+
 
     def battle(self, enemy):
         pass
@@ -141,19 +171,18 @@ class GameManager:
         # También se puede decir que este método devuelve el segundo argumento para instanciar dicho argumento (clase)
         #
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-        self.showOnScreen(class_description)
+        self.showMessage(class_description)
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showMessage(Constants.CHARACTER_CREATION_CLASS_CONFIRM)
         while True:
             # while para prevenir que usuario escriba otra cosa que no sea "si" o "no" cuando confirma su clase
-            self.showOnScreen(Constants.CHARACTER_CREATION_CLASS_CONFIRM)
             player_class_choice_confirmation = self.getPlayerChoice()
             if player_class_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_YES:
                 return class_type_with_player_name_as_argument
             elif player_class_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_NO:
                 return None
             else:
-                self.showOnScreen(Constants.CHARACTER_CREATION_CLASS_INVALID_CONFIRM)
-                self.waitSeconds(Constants.TIME_BETWEEN_WARNINGS)
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
 
     def calculateChance(self, chance):
         # Devolverá un valor booleano, random.random() devuelve un flotante cualquiera
@@ -170,9 +199,18 @@ class GameManager:
         else:
             return input(prompt)
 
-    def showOnScreen(self, message):
+    def showMessage(self, message):
         # Mostrará por pantalla la cadena pasada como argumento
         return print(message)
+
+    def showWarning(self, message):
+        self.showMessage("\n"+message)
+        self.waitSeconds(Constants.TIME_BETWEEN_WARNINGS)
+        up = '\033[1A'
+        clear = '\x1b[2K'
+        print(up, end=clear)
+        print(up, end=clear)
+        return print(up, end=clear)
 
     def waitSeconds(self, seconds):
         time.sleep(seconds)
