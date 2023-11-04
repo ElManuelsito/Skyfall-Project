@@ -1,4 +1,4 @@
-#     print(INTRO_GAME)
+# print(INTRO_GAME)
 # se deben guardar las constantes en un archivo "constant"
 # INTRO_GAME = "INTRODUCCIÓN AL JUEGO"
 # MENU = "1- Entrar al juego" \

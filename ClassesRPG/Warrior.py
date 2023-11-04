@@ -1,3 +1,4 @@
+import Constants
 from Character import Character
 
 # Para entender qué significa cada número:
@@ -25,4 +26,17 @@ class Warrior(Character):
     def skill_b(self):
         pass
 
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_WARRIOR
+
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_WARRIOR
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_WARR
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_WARR
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_WARR
 
