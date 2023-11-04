@@ -158,7 +158,7 @@ class GameManager:
     def battle(self, enemy):
         pass
 
-    def confirmPlayerClassChoiceAndAssign(self, class_description, class_type_with_player_name_as_argument):
+    def confirmPlayerClassChoiceAndAssign(self, class_description, classrpg_with_player_name_classobj):
         #
         # Método verifica que el usuario elige a la clase descrita, asegurando una respuesta esperada ("si" o "no")
         # <constante de descripción de la clase correspondiente a player_class_choice> pasada como primer argumento,
@@ -178,7 +178,7 @@ class GameManager:
             # while para prevenir que usuario escriba otra cosa que no sea "si" o "no" cuando confirma su clase
             player_class_choice_confirmation = self.getPlayerChoice()
             if player_class_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                return class_type_with_player_name_as_argument
+                return classrpg_with_player_name_classobj
             elif player_class_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_NO:
                 return None
             else:
@@ -206,11 +206,59 @@ class GameManager:
     def showWarning(self, message):
         self.showMessage("\n"+message)
         self.waitSeconds(Constants.TIME_BETWEEN_WARNINGS)
+        #
+        # A continuación se hace uso de Secuencias de Escape, Secuencias de códigos de Escape y Secuencias de Control
+        #
+        # - El carácter ESC (como si estuviéramos apretando esa tecla) se llama carácter de control.
+        # - Barra \ en python (y específicamente en C) es el "carácter de escape", se usa para indicar que
+        #   la siguiente letra debe ser interpretada de otra forma, esto permite controlar la salida en pantalla,
+        #   es decir, el standard output. Esto incluye nueva linea (\n), eliminar una linea (carriage return: \r),
+        #   tabulación (\t), entre otros.
+        #
+        # ° Secuencias de escape utilizadas: \033 y \x1b.
+        #   - El primero usa el sistema octal. Para utilizar el sistema octal se debe hacer uso
+        #     del carácter de escape (\) con tres números consecuentes (ej. \000, \033, \127).
+        #   - En el código ASCII (googlear tabla), el carácter de control ESC en valores octales es 033.
+        #   - Por otro lado, \x1b utiliza hexadecimal, para usar hexadecimal se debe escribir \x con dos números que le
+        #     sigan a la x sin espacios. \x1b o \x1B también entonces hacen referencia al carácter de control ESC.
+        #   - Extra: el carácter de control ESC en Unicode es \u001b
+        #   - Aclaración: no hay una razón específica por la cual se usó dos sistemas distintos en up y clear, fue
+        #     simplemente una decisión para que quede más claro cómo funcionan las secuencias. Tranquilamente los dos
+        #     podrían usar solamente \x1B o solamente \003.
+        #
+        # ° Códigos de escape utilizados: [1A y [2K.
+        #   - Existen muchos códigos de escape y llevan a cabo una función distinta (por ej. [#A, [#B, [s, [J, etc.
+        #     donde # es el argumento y puede ir cualquier número)
+        #   - En este caso, [1A indica que el cursor se desplace un lugar arriba. Por tanto [2A indicará que se desplace
+        #     2 lugares arriba. Si no se especifica ningún valor simplemente se moverá 1 lugar arriba.
+        #   - Para el caso de [2K, indica que se borre la línea entera en donde está parado el cursor. [1k borraría solo
+        #     hasta el principio de la línea, y [0K, borraría solo hasta el final de la línea.
+        #   - Se llaman así porque se escriben después del carácter de control ESC, es decir \x1B (o \033, o tmb \u001b)
+
+        # ° Secuencias de control (o Secuencias de código de escape) utilizadas: \033[1A y \x1B[2K.
+        #   - No son más que las secuencias de escape + los códigos escape en una misma cadena. Fueron guardados en
+        #     variables para que sea más claro de entender lo que hacen.
+        #   - Para saber más buscar CSI (Control Sequence Introducer)
+        #
+        #  Por último, el código debajo de este comentario hace lo siguiente: en un print, por defecto, el end= es
+        #  parecido a un \n, por lo que si escribimos print("hola") el cursor no va a quedarse en "hola", va a quedarse
+        #  abajo de hola, en una nueva línea. Al escribir print("hola", end={algo}), estamos especificando qué queremos
+        #  que el interpretador haga al final de la línea, por lo tanto, si escribimos print("hola", end=up), el cursor
+        #  ahora SÍ va a estar parado en la misma línea que hola. Con un ejemplo:
+        #   print("hola")
+        #   time.sleep(1)
+        #   print(up, clear)
+        #  Esto mostrará "hola" por un segundo, el cursor se moverá arriba en la misma línea que "hola", y la eliminará.
+        #
+        # Por eso, al mostrar un WARNING_MESSAGE, primero se eliminará el mensaje de advertencia, luego se eliminará el
+        # espacio en blanco añadido con \n en ("\n"+message), y por último se eliminará el mensaje de "Opción:" ya que
+        # se va a mostrar de nuevo cuando termine de ejecutarse esta función.
+        #
         up = '\033[1A'
-        clear = '\x1b[2K'
-        print(up, end=clear)
-        print(up, end=clear)
-        return print(up, end=clear)
+        clear = '\x1B[2K'
+        print(up, end=clear)    # elimina el mensaje de advertencia
+        print(up, end=clear)    # elimina la nueva línea anidada al mensaje de advertencia (es decir el \n)
+        return print(up, end=clear)  # eliminará el mensaje para el usuario "Opción:"
 
     def waitSeconds(self, seconds):
         time.sleep(seconds)
