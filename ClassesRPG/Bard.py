@@ -20,4 +20,17 @@ class Bard(Character):
     def skill_c(self):
         pass #Ispiracion de valentia(provoca un aumento de vida)
 
+def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_BARD
+
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_BARD
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_BARD
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_BARD
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_BARD
 
