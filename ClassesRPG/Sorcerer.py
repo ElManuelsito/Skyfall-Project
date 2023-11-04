@@ -17,5 +17,17 @@ class Sorcerer(Character):
     def skill_b(self):
         pass #Hace que el enemigo se dañe asi mismo. 
 
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_SORC
 
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_SORC
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_SORC
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_SORC
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_SORC
 
