@@ -17,4 +17,18 @@ class Tank(Character):
     def skill_b(self):
         pass #Acumulacion(mientras mas daño reciba mas daño devuelve)
 
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_TANK
+
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_TANK
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_TANK
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_TANK
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_TANK
+
 
