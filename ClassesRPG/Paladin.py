@@ -19,4 +19,18 @@ class Paladin(Character):
 
     def skill_c(self):
         pass #Desacer debuff 
+        
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_PAL
+
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_PAL
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_PAL
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_PAL
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_PAL
 

@@ -16,4 +16,17 @@ class Necromancer(Character):
 
     def skill_b(self):
         pass #Magia Dark  
+        
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_NEC
 
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_NEC
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_NEC
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_NEC
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_NEC

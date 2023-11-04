@@ -17,5 +17,17 @@ class Wizard(Character):
     def skill_b(self):
         pass #Rayo
 
+    def getCommonAttackOptions(self):
+        return Constants.COMMON_ATTACKS_WIZARD
 
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACKS_WIZARD
+
+    def getSpecialAttackDescription(self, option):
+        if option == 1:
+            return Constants.SPECIAL_ATTACK_A_DESC_WIZ
+        elif option == 2:
+            return Constants.SPECIAL_ATTACK_B_DESC_WIZ
+        elif option == 3:
+            return Constants.SPECIAL_ATTACK_C_DESC_WIZ
 
