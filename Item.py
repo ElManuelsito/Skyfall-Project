@@ -24,7 +24,7 @@ class Item:
 
 potion_healing_small = Item("Poción de curación (pequeña)",
                             "Evidentemente, no podrás curarte de todos tus males con una sola.",
-                            "potion_healing",
+                            "potion",
                             20,
                             0,
                             None,
