@@ -1,5 +1,5 @@
 
-class Location:
+class location:
     def __init__(self, name, description, events=[]):
         self.name = name
         self.description = description

@@ -1,12 +1,12 @@
 import ClassesRPG.Archer as Cl_Archer
-# import ClassesRPG.Tank as Cl_Tank
-# import ClassesRPG.Wizard as Cl_Wizard
-# import ClassesRPG.Thief as Cl_Thief
-# import ClassesRPG.Bard as Cl_Bard
-# import ClassesRPG.Necromancer as Cl_Necro
-# import ClassesRPG.Paladin as Cl_Paladin
-# import ClassesRPG.Sorcerer as Cl_Sorcerer
-# import ClassesRPG.Warrior as Cl_Warrior
+import ClassesRPG.Tank as Cl_Tank
+import ClassesRPG.Wizard as Cl_Wizard
+import ClassesRPG.Thief as Cl_Thief
+import ClassesRPG.Bard as Cl_Bard
+import ClassesRPG.Necromancer as Cl_Necro
+import ClassesRPG.Paladin as Cl_Paladin
+import ClassesRPG.Sorcerer as Cl_Sorcerer
+import ClassesRPG.Warrior as Cl_Warrior
 import Constants
 from Skyfall import Manager
 
@@ -29,6 +29,26 @@ class Enemy:
                     return self.isDead()
             else:
                 Manager.showCombinedMessage(player_classobj.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
+
+        elif type(player_classobj)==Cl_Bard.Bard:
+            if Manager.GameManager.calculateChance((Constants.BASE_ACC+((Constants.BASE_ACC* player_classobj.acc)/100))):
+                final_health = self.health - (player_info_dictobj["weapoon_L"].dmg + ((player_info_dictobj["weapon_L"] * player_classobj.int)/150))
+                self.health = float(f"{final_health:.2f}")
+                if self.health <= 0:
+                    return self.isDead()
+            else:
+                Manager.showCombinedMessage(player_classobj.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
+
+        elif type(player_classobj)==Cl_Bard.Bard:
+            if Manager.GameManager.calculateChance((Constants.BASE_ACC+((Constants.BASE_ACC* player_classobj.acc)/100))):
+                final_health = self.health - (player_info_dictobj["weapoon_L"].dmg + ((player_info_dictobj["weapon_L"] * player_classobj.int)/150))
+                self.health = float(f"{final_health:.2f}")
+                if self.health <= 0:
+                    return self.isDead()
+            else:
+                Manager.showCombinedMessage(player_classobj.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
+
+
 
     def takeDamageFromPlayerSpecial(self, player, selected_skill):
         pass
