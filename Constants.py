@@ -17,11 +17,11 @@
 #                "money": 0,
 #                "location": None}
 # with open("savefile.pickle", "wb") as f:
-#     pickle.dump(player_inv, f, protocol=0)
+#     pickle.dump(player_info, f, protocol=0)
 # f.close()
 #
 # with open("savefile.pickle", "rb") as f:
-#     player_inv = pickle.load(f)
+#     player_info = pickle.load(f)
 # f.close()
 # print(player_inv.items())
 
@@ -31,6 +31,7 @@
 # -------------------- Menu Related --------------------
 
 # [ PLAYER INTERACTION WITH SYSTEM]
+
 PLAYER_PROMPT_OPTION = "Opción: "
 PLAYER_PROMPT_NAME = "Nombre: "
 PRESS_ENTER_TO_CONTINUE = "\nPresiona Enter para continuar...\n"
@@ -39,10 +40,15 @@ PRESS_ENTER_TO_RETURN = "\nPresiona Enter para volver...\n"
 # [ OPTIONS, MESSAGES AND WARNINGS ]
 WELCOMING_MESSAGE = "\n\n                    ~ Skyfall ~\nSelecciona una opción ingresando su número por teclado.\n"
 MAIN_MENU_OPTIONS = "1. Nuevo juego\n2. Continuar\n3. Opciones\n4. Instrucciones\n5. Salir\n"
+WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION = "No existe esa opción! Por favor selecciona una de las opciones dadas."
+MAIN_MENU_MESSAGE_SAVEFILE_ALREADY_EXISTS = "Advertencia! Ya existe un archivo de guardado!\nSi eliges continuar ahora se eliminará tu progreso y tendrás que comenzar desde cero.\n"
+MAIN_MENU_MESSAGE_SAVEFILE_DELETE_CONFIRMATION = "¿Deseas continuar? (si/no)"
+MAIN_MENU_MESSAGE_SAVEFILE_DELETED = "\nEl archivo a sido eliminado\n"
+MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU = "\nVolviendo al menu principal..."
 PLAYER_PROMPT_SET_FOR_YES = {"s", "S", "si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}   # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
 PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                           # misma estructura, pero para "No"
 TIME_BETWEEN_MESSAGES = 0.85
-TIME_BETWEEN_WARNINGS = 3
+TIME_BETWEEN_WARNINGS = 3.5
 
 INSTRUCTIONS_MENU = "\nBienvenido a Skyfall! Para comenzar por favor lea estas instrucciones:\n1. Navegar el menú\n2. Navegar el mundo\n 3. Combate\n 4. Items\n"
 TIPS = ["Tip: para abrir el menu de opciones durante el combate, ingresar \"pausa\"."]
@@ -119,6 +125,14 @@ WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE = "No existe ese lugar! Por favor elig
 COMBAT_OPTIONS = "Decide qué hacer:\n1. Ataques comunes     2. Habilidades\n" \
                  "3. item                4. Huir\n"
 SPECIAL_ATTACK_CONFIRM = "¿Deseas usar esta habilidad? (si/no)"
+SOMEONE_ATTACKS = "ataca!"
+SOMEONE_ATTACKS_AND_MISSES = "intentó atacar, pero falló!"
+SOMEONE_RECEIVES_DAMAGE = "recibe daño:"
+SOMEONE_FLED = "no pudo soportalo y salió corriendo!"
+SOMEONE_FLED_AND_FAILED = "...pero no logró escapar."
+SOMEONE_FLED_AND_SUCCEEDED = "...y escapó."
+SOMEONE_is_DEFEATED = "no puede continuar, y es derrotado!"
+
 
 # [ ARCHER ]
 COMMON_ATTACKS_ARCHER = "\nAtaques Comunes:\n1. Disparo Certero      2. Disparo Rápido\n"
@@ -191,9 +205,11 @@ SPECIAL_ATTACK_A_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \
 SPECIAL_ATTACK_B_BARD = "Helear:\n+ Restaura un 40HP de vida \n+ Coste Intermedio de Mana \n"
 SPECIAL_ATTACK_C_DESC_BAR = "Remover Efecto:\n+ Remueve cualquier efecto que le hallan tirado\n+ Coste Intermedio de Mana \n"
 
-#
+
 # print(COMBAT_OPTIONS)
 # input(USER_PROMPT)
 # print(COMMON_ATTACKS_ARCHER)
 # input(USER_PROMPT)
 
+# with open("savefile.pickle", "rb") as f:
+#     player_info = pickle.load()

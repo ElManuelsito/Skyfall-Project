@@ -1,6 +1,5 @@
 import Constants
 from Character import Character
-import random
 
 # class Archer(Character):
 #     def __init__(self, name):
@@ -13,13 +12,13 @@ class Archer(Character):
         super().__init__(name, health=120, armor=20, mana=20, str=10, agi=18, int=7, faith=8, acc=19, res_magic=7,
                          res_phys=5, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
-    def skill_a(self):
-        print("usando habilidad a")
+    def attackWithSkillA(self, enemy):
+        enemy.takeDamageFromPlayerSpecial(self, "A")
 
-    def skill_b(self):
+    def attackWithSkillB(self):
         print("Usando habilidad b")
         
-    def skill_c(self):
+    def attackWithSkillC(self):
         print("Usando habilidad c")
 
     def getCommonAttackOptions(self):

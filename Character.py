@@ -44,5 +44,5 @@ class Character:
     def takeDamage(self, enemy):
         self.health = self.health - (enemy.dmg - (enemy.dmg * (self.armor / 200)))
 
-    def attackNormally(self):
-        pass
+    def attackNormally(self, enemy):
+        enemy.takeDamage(self)

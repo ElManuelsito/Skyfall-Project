@@ -1,20 +1,27 @@
 # cada clase, cada archivo
+# GameManager, donde se realizan la mayoría de las tareas del juego
+
+import os
+import pickle
+import random
+import time
+
 import ClassesRPG.Archer as Cl_Archer
-import ClassesRPG.Tank as Cl_Tank
-import ClassesRPG.Wizard as Cl_Wizard
-import ClassesRPG.Thief as Cl_Thief
 import ClassesRPG.Bard as Cl_Bard
 import ClassesRPG.Necromancer as Cl_Necro
 import ClassesRPG.Paladin as Cl_Paladin
 import ClassesRPG.Sorcerer as Cl_Sorcerer
+import ClassesRPG.Tank as Cl_Tank
+import ClassesRPG.Thief as Cl_Thief
 import ClassesRPG.Warrior as Cl_Warrior
-import Item
+import ClassesRPG.Wizard as Cl_Wizard
+import PointOfInterest as POI
 import Constants
-import pickle
-import time
-import random
+import Item
+
 
 global player_info
+global Player
 
 
 class GameManager:
@@ -24,11 +31,19 @@ class GameManager:
     def initializeGame(self):
         self.showMessage(Constants.WELCOMING_MESSAGE)
         self.showMessage(Constants.MAIN_MENU_OPTIONS)
-        player_main_menu_choice = self.getPlayerChoice()
-        if player_main_menu_choice == "1":
-            self.createCharacter()
+        while True:
+            player_main_menu_choice = self.getPlayerChoice()
+            if player_main_menu_choice == "1":
+                if os.path.isfile("savefile.pickle"):
+                    if not self.confirmPlayerSaveFileDeletion():
+                        return self.initializeGame()
+                self.createCharacter()
+            else:
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION)
 
     def createCharacter(self):
+        global player_info
+        global Player
         # método que es llamado al elegir "nuevo juego" en el menu principal
         # el usuario podrá crear su personaje y elegir su spawnpoint
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
@@ -51,83 +66,93 @@ class GameManager:
             # se le asigna a una variable porque si no estaría preguntando "Opción: " una y otra vez en cada elif
             if player_class_choice == "1":      # Opción 1 corresponde a Arquero
                 # Cl_Archer se refiere al módulo y .Archer a la clase. Esto aplica para los otros player_class_choice.
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_ARCHER,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_ARCHER,
                                                                 Cl_Archer.Archer(player_name))
                 # si el usuario ingresó si, entonces variable player existe y es instancia. De lo contrario será None.
-                if player:
+                if Player:
                     # este chequeo no es función, ya que no hay forma de retornar un break o continue
+                    player_info = {"weapon_1": Item.bow_newborn,
+                                   "weapon_2": False,
+                                   "helmet": False,
+                                   "breastplate": False,
+                                   "chausses": False,
+                                   "gauntlets": False,
+                                   "backpack_items": {"weapons": [],
+                                                      "potions": [],
+                                                      "armors": []},
+                                   "location": None}
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "2":    # Opción 2 corresponde a Mago
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WIZARD,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WIZARD,
                                                                 Cl_Wizard.Wizard(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "3":    # Opción 3 corresponde a Guerrero
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WARRIOR,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_WARRIOR,
                                                                 Cl_Warrior.Warrior(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "4":    # Opción 4 corresponde a Ladrón
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_THIEF,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_THIEF,
                                                                 Cl_Thief.Thief(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "5":    # Opción 5 corresponde a Hechicero
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_SORCERER,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_SORCERER,
                                                                 Cl_Sorcerer.Sorcerer(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "6":    # Opción 6 corresponde a Paladin
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_PALADIN,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_PALADIN,
                                                                 Cl_Paladin.Paladin(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "7":    # Opción 7 corresponde a Nigromante
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_NECROMANCER,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_NECROMANCER,
                                                                 Cl_Necro.Necromancer(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "8":    # Opción 8 corresponde a Tanque
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_TANK,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_TANK,
                                                                 Cl_Tank.Tank(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                     self.showMessage(Constants.CHARACTER_CREATION_ALL_CLASSES)
                     continue
             elif player_class_choice == "9":    # Opción 9 corresponde a Bardo
-                player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_BARD,
+                Player = self.confirmPlayerClassChoiceAndAssign(Constants.CHARACTER_CREATION_DESCRIPTION_BARD,
                                                                 Cl_Bard.Bard(player_name))
-                if player:
+                if Player:
                     break
                 else:
                     self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
@@ -145,15 +170,19 @@ class GameManager:
         while True:
             player_spawnpoint_choice = self.getPlayerChoice()
             if player_spawnpoint_choice == "1":     # Opción 1 Corresponde a Muldraugh
-                player_spawnpoint_choice = "muldraugh"
+                player_info["location"] = POI.Muldraugh
                 break
             elif player_spawnpoint_choice == "2":   # Opción 2 corresponde a Riverside
-                player_spawnpoint_choice = "riverside"
+                player_info["location"] = POI.Riverside
                 break
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE)
 
+        self.saveGame()
 
+    def goInGame(self):
+        if Player.name == "juan":
+            pass
 
     def battle(self, enemy):
         pass
@@ -184,9 +213,32 @@ class GameManager:
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
 
+    def confirmPlayerSaveFileDeletion(self):
+        self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_ALREADY_EXISTS)
+        self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_DELETE_CONFIRMATION)
+        while True:
+            player_delete_savefile_confirmation = self.getPlayerChoice()
+            if player_delete_savefile_confirmation in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                os.remove("savefile.pickle")
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_DELETED)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                return True
+            elif player_delete_savefile_confirmation in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                os.system("cls")
+                return False
+            else:
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+
     def calculateChance(self, chance):
         # Devolverá un valor booleano, random.random() devuelve un flotante cualquiera
         # Por ej. 0.619374830802 el cual es menor (<) a 0.80 (es decir 80/100)
+        # Por ej2: si quiero saber si algo ocurre con un 80% de chance, simplemente ingresar 80 como argumento
         if random.random() < (chance / 100):
             return True
         else:
@@ -199,9 +251,26 @@ class GameManager:
         else:
             return input(prompt)
 
+    def saveGame(self):
+        global player_info
+        global Player
+        with open("savefile.pickle", "wb") as f:
+            pickle.dump(player_info, f, protocol=0)
+            pickle.dump(Player, f, protocol=0)
+            f.close()
+        with open("savefile.pickle", "rb") as f:
+            player_info = pickle.load(f)
+            Player = pickle.load(f)
+            f.close()
+
     def showMessage(self, message):
         # Mostrará por pantalla la cadena pasada como argumento
         return print(message)
+
+    def showCombinedMessage(self, msg1, msg2, msg3="", msg4="", msg5="",
+                            msg6="", msg7="", msg8="", msg9="", msg10=""):
+        return print(msg1, msg2, msg3, msg4, msg5,
+                     msg6, msg7, msg8, msg9, msg10)
 
     def showWarning(self, message):
         self.showMessage("\n"+message)
@@ -240,10 +309,11 @@ class GameManager:
         #     variables para que sea más claro de entender lo que hacen.
         #   - Para saber más buscar CSI (Control Sequence Introducer)
         #
-        #  Por último, el código debajo de este comentario hace lo siguiente: en un print, por defecto, el end= es
-        #  parecido a un \n, por lo que si escribimos print("hola") el cursor no va a quedarse en "hola", va a quedarse
-        #  abajo de hola, en una nueva línea. Al escribir print("hola", end={algo}), estamos especificando qué queremos
-        #  que el interpretador haga al final de la línea, por lo tanto, si escribimos print("hola", end=up), el cursor
+        #  Por último, el código debajo de este comentario hace lo siguiente: en un print, por defecto, el end= no se ve
+        #  y hace que el cursor se pare en la línea debajo del texto que se acaba de mostrar por pantalla,
+        #  por lo que si escribimos print("hola") el cursor no va a quedarse en "hola", va a quedarse
+        #  en la línea debajo de hola. Al escribir print("hola", end={algo}), estamos especificando qué queremos
+        #  que el interpretador haga después de printear, por lo tanto, si escribimos print("hola", end=up), el cursor
         #  ahora SÍ va a estar parado en la misma línea que hola. Con un ejemplo:
         #   print("hola")
         #   time.sleep(1)
@@ -251,14 +321,14 @@ class GameManager:
         #  Esto mostrará "hola" por un segundo, el cursor se moverá arriba en la misma línea que "hola", y la eliminará.
         #
         # Por eso, al mostrar un WARNING_MESSAGE, primero se eliminará el mensaje de advertencia, luego se eliminará el
-        # espacio en blanco añadido con \n en ("\n"+message), y por último se eliminará el mensaje de "Opción:" ya que
-        # se va a mostrar de nuevo cuando termine de ejecutarse esta función.
+        # espacio en blanco añadido con \n en ("\n"+message), y por último se eliminará el mensaje de "Opción:" o
+        # "Nombre:" ya que se va a mostrar de nuevo de todas formas cuando termine de ejecutarse esta función.
         #
-        up = '\033[1A'
-        clear = '\x1B[2K'
-        print(up, end=clear)    # elimina el mensaje de advertencia
-        print(up, end=clear)    # elimina la nueva línea anidada al mensaje de advertencia (es decir el \n)
-        return print(up, end=clear)  # eliminará el mensaje para el usuario "Opción:"
+        up = '\033[1A'  # secuencia de control que mueve el cursor 1 línea arriba
+        clear = '\x1B[2K'   # secuencia de control que elimina la línea entera en donde el cursor esté parado
+        print(up, end=clear)    # eliminará el mensaje de advertencia
+        print(up, end=clear)    # eliminará la nueva línea anidada al mensaje de advertencia (es decir el \n)
+        return print(up, end=clear)  # eliminará el mensaje para el usuario "Opción:" o "Nombre:" o cualquier otro
 
     def waitSeconds(self, seconds):
         time.sleep(seconds)
