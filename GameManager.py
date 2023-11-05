@@ -29,6 +29,8 @@ class GameManager:
         pass
 
     def initializeGame(self):
+        global player_info
+        global Player
         self.showMessage(Constants.WELCOMING_MESSAGE)
         self.showMessage(Constants.MAIN_MENU_OPTIONS)
         while True:
@@ -38,8 +40,36 @@ class GameManager:
                     if not self.confirmPlayerSaveFileDeletion():
                         return self.initializeGame()
                 self.createCharacter()
+                self.clearScreen()
+                self.showMessage("\n" + Constants.MAIN_MENU_MESSAGE_GAME_LOADING)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.clearScreen()
+                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                self.beginGame()
+            elif player_main_menu_choice == "2":
+                pass # cargar la partida
+            elif player_main_menu_choice == "3":
+                pass # instrucciones / manual del juego
+            elif player_main_menu_choice == "4":
+                return None
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION)
+
+    def beginGame(self):
+        if self.checkIfPlayerIsInLocation(POI.Muldraugh):
+            self.showMessage(Constants.INTRO_MESSAGE_MULDRAUGH)
+        elif self.checkIfPlayerIsInLocation(POI.Riverside):
+            self.showMessage(Constants.INTRO_MESSAGE_RIVERSIDE)
+        while True:
+            self.showCombinedMessage(Constants.WORLD_PLAYER_IS_IN_POI, player_info["location"])
+            break
+
+    def getTravelOptions(self):
+        pass
+
+    def battle(self, enemy):
+        pass
 
     def createCharacter(self):
         global player_info
@@ -170,22 +200,19 @@ class GameManager:
         while True:
             player_spawnpoint_choice = self.getPlayerChoice()
             if player_spawnpoint_choice == "1":     # Opción 1 Corresponde a Muldraugh
-                player_info["location"] = POI.Muldraugh
-                break
+                if self.confirmPlayerSpawnpoint(POI.Muldraugh):
+                    break
+                else:
+                    continue
             elif player_spawnpoint_choice == "2":   # Opción 2 corresponde a Riverside
-                player_info["location"] = POI.Riverside
-                break
+                if self.confirmPlayerSpawnpoint(POI.Riverside):
+                    break
+                else:
+                    continue
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE)
 
-        self.saveGame()
-
-    def goInGame(self):
-        if Player.name == "juan":
-            pass
-
-    def battle(self, enemy):
-        pass
+        return self.saveGame()
 
     def confirmPlayerClassChoiceAndAssign(self, class_description, classrpg_with_player_name_classobj):
         #
@@ -213,6 +240,27 @@ class GameManager:
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
 
+    def confirmPlayerSpawnpoint(self, location_clasobj):
+        global player_info
+        self.showCombinedMessage(location_clasobj.Name, "\n" + location_clasobj.description)
+        player_spawnpoint_choice_confirm = self.getPlayerChoice(Constants.
+                                                                CHARACTER_CREATION_WORLD_SPAWNPOINT_CONFIRMATION)
+        if player_spawnpoint_choice_confirm in Constants.PLAYER_PROMPT_SET_FOR_YES:
+            player_info["location"] = location_clasobj
+            return True
+        elif player_spawnpoint_choice_confirm in Constants.PLAYER_PROMPT_SET_FOR_NO:
+            self.showMessage(Constants.CHARACTER_CREATION_WORLD_SPAWNPOINTS)
+            return False
+        else:
+            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+
+    def checkIfPlayerIsInLocation(self, location_classobj):
+        global player_info
+        if player_info["location"] == location_classobj:
+            return True
+        else:
+            return False
+
     def confirmPlayerSaveFileDeletion(self):
         self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_ALREADY_EXISTS)
         self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_DELETE_CONFIRMATION)
@@ -230,7 +278,7 @@ class GameManager:
                 self.showMessage(Constants.MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU)
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                os.system("cls")
+                self.clearScreen()
                 return False
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
@@ -262,6 +310,9 @@ class GameManager:
             player_info = pickle.load(f)
             Player = pickle.load(f)
             f.close()
+
+    def clearScreen(self):
+        return os.system("cls")
 
     def showMessage(self, message):
         # Mostrará por pantalla la cadena pasada como argumento

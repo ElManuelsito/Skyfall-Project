@@ -39,12 +39,13 @@ PRESS_ENTER_TO_RETURN = "\nPresiona Enter para volver...\n"
 
 # [ OPTIONS, MESSAGES AND WARNINGS ]
 WELCOMING_MESSAGE = "\n\n                    ~ Skyfall ~\nSelecciona una opción ingresando su número por teclado.\n"
-MAIN_MENU_OPTIONS = "1. Nuevo juego\n2. Continuar\n3. Opciones\n4. Instrucciones\n5. Salir\n"
+MAIN_MENU_OPTIONS = "1. Nuevo juego\n2. Continuar\n3. Instrucciones\n4. Salir\n"
 WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION = "No existe esa opción! Por favor selecciona una de las opciones dadas."
 MAIN_MENU_MESSAGE_SAVEFILE_ALREADY_EXISTS = "Advertencia! Ya existe un archivo de guardado!\nSi eliges continuar ahora se eliminará tu progreso y tendrás que comenzar desde cero.\n"
 MAIN_MENU_MESSAGE_SAVEFILE_DELETE_CONFIRMATION = "¿Deseas continuar? (si/no)"
 MAIN_MENU_MESSAGE_SAVEFILE_DELETED = "\nEl archivo a sido eliminado\n"
 MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU = "\nVolviendo al menu principal..."
+MAIN_MENU_MESSAGE_GAME_LOADING = "Cargando mundo..."
 PLAYER_PROMPT_SET_FOR_YES = {"s", "S", "si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}   # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
 PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                           # misma estructura, pero para "No"
 TIME_BETWEEN_MESSAGES = 0.85
@@ -117,7 +118,23 @@ CHARACTER_CREATION_DESCRIPTION_BARD = "\n\n|| Bardo ||\nSalud: 80\nDefensa: 10\n
 CHARACTER_CREATION_WORLD_MESSAGE = "\nPara finalizar, elige tu punto de aparición"
 CHARACTER_CREATION_WORLD_SPAWNPOINTS = "\n1. Muldraugh\n2. Riverside\n"
 WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE = "No existe ese lugar! Por favor elige donde quieres aparecer"
+CHARACTER_CREATION_WORLD_SPAWNPOINT_CONFIRMATION = "¿Deseas aparecer aquí? (si/no)"
 
+INTRO_MESSAGE_RIVERSIDE = "Comienza un nuevo día, te levantas de tu pequeña y miserable caja, la misma caja que ha " \
+                          "actuado como tu hogar por ya no sabes cuánto tiempo.\nOtra día en donde la comida es escasa" \
+                          " y lo único que hay en tu bolso es polvo y un vacío que representa tu voluntad de seguir en" \
+                          " este estado deplorable.\n\nDecides ponerle un fin a este estilo de vida, haciendo el " \
+                          "último llamado: salir adelante o morir. Recoges tus únicas pertenencias, y emprendes viaje."
+INTRO_MESSAGE_MULDRAUGH = "Un punzante dolor te despierta de tu sueño repentino, todo tu alrededor parece dar vueltas" \
+                          " y no logras alcanzar a comprender tu situación.\nTratas de recomponerte, y luego de un rato" \
+                          " comienzas a recordar, esos bandidos se llevaron todo!\n\nSabías que venir a este reino no" \
+                          " era buena idea, pero la invitación al Cuarto Real era muy tentadora para no aceptarla." \
+                          " Recoges lo primero que encuentras entre la basura, y emprendes viaje para vengarte de " \
+                          "aquellos que te hicieron daño."
+
+# -------------------- Exploration Related --------------------
+
+WORLD_PLAYER_IS_IN_POI = "Ahora mismo te encuentras en:"
 
 # -------------------- Combat Related --------------------
 
