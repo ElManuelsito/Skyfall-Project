@@ -63,13 +63,14 @@ class GameManager:
             self.showMessage(Constants.INTRO_MESSAGE_RIVERSIDE)
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES+6)
         while True:
-            self.showCombinedMessage(Constants.WORLD_PLAYER_IS_IN_POI, player_info["location"])
-
+            self.showCombinedMessage(Constants.WORLD_PLAYER_IS_IN_POI, player_info["location"]+"\n")
+            self.getTravelOptions()
             break
 
     def getTravelOptions(self):
         if self.checkIfPlayerIsInLocation(POI.Riverside):
-            for index in POI.Riverside.connected_locations:
+            print("Lugares disponibles:")
+            for i in POI.Riverside.connected_locations:
                 pass
 
     def battle(self, enemy):
@@ -106,7 +107,6 @@ class GameManager:
                 if Player:
                     # este chequeo no es función, ya que no hay forma de retornar un break o continue
                     player_info = {"weapon_1": Item.bow_newborn,
-                                   "weapon_2": False,
                                    "helmet": False,
                                    "breastplate": False,
                                    "chausses": False,
@@ -395,8 +395,8 @@ class GameManager:
 
 
 # Testeando
-# print(Constants.player_inv["weapon_r"])
-# Constants.player_inv["weapon_r"] = "Espada de Tenshi"
+# print(Constants.player_inv["weapon_1"])
+# Constants.player_inv["weapon_1"] = "Espada de Tenshi"
 
 # manager = GameManager()
 # manager.waitForButtonPress()
