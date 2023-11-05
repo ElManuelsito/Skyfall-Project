@@ -246,7 +246,7 @@ class GameManager:
 
     def confirmPlayerSpawnpoint(self, location_clasobj):
         global player_info
-        self.showCombinedMessage(location_clasobj.Name, "\n" + location_clasobj.description)
+        self.showCombinedMessage(location_clasobj.name, "\n" + location_clasobj.description)
         player_spawnpoint_choice_confirm = self.getPlayerChoice(Constants.
                                                                 CHARACTER_CREATION_WORLD_SPAWNPOINT_CONFIRMATION)
         if player_spawnpoint_choice_confirm in Constants.PLAYER_PROMPT_SET_FOR_YES:
@@ -295,6 +295,15 @@ class GameManager:
             return True
         else:
             return False
+
+    def calculateEnemyHealthAfterPlayerAttack(self, stat, health, stat_bonus_divider):
+        global player_info
+        if self.calculateChance((70 + ((70 * stat) / 100))):
+            final_health = health - (player_info["weapon_1"].dmg + ((player_info["weapon_1"] * stat) / stat_bonus_divider))
+            return float(f"{final_health:.2f}")
+        else:
+            self.showCombinedMessage(Player.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
+            return health
 
     def getPlayerChoice(self, prompt=Constants.PLAYER_PROMPT_OPTION):
         # por defecto hará input("Opción: "), ingresar argumento para cambiar el mensaje
