@@ -101,13 +101,15 @@ class Enemy:
                     return self.isDead()
             else:
                 Manager.showCombinedMessage(player_classobj.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
-    def takeDamageFromPlayerSpecial(self, player_classobj, selected_skill):
+    def takeDamageFromPlayerSpecial(self, player_classobj,player_info_dictobj):
         if type(player_classobj) == Cl_Archer.Archer:
-            if selected_skill == "A"
-                final_healt = self.health-(player_info_dictobj)]
-                pass
-            elif == "B"
-            elif == "C"
+            if Manager.GameManager.calculateChance((Constants.BASE_ACC + ((Constants.BASE_ACC * player_classobj.acc)/100))):
+            final_health = self.health - (player_info_dictobj["weapon_1"].dmg + ((player_info_dictobj["weapon_1"] * player_classobj.acc)/200))*2
+            self.health=float(f"{final_health:.2f}")
+            if self.health <= 0:
+                return self.isDead()
+            else:
+                Manager.showCombinedMessage(player_classobj.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
 
     def isDead(self):
         return True
