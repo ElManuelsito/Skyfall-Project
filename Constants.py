@@ -148,7 +148,7 @@ SOMEONE_FLED = "no pudo soportalo y salió corriendo!"
 SOMEONE_FLED_AND_FAILED = "...pero no logró escapar."
 SOMEONE_FLED_AND_SUCCEEDED = "...y escapó."
 SOMEONE_is_DEFEATED = "no puede continuar, y es derrotado!"
-BASE_ACC= 70
+BASE_ACC = 70
 
 
 # [ ARCHER ]
