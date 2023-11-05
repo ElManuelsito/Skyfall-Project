@@ -13,16 +13,7 @@ class Archer(Character):
                          res_phys=5, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
     def attackWithSkillA(self, enemy):
-        enemy.takeDamageFromPlayerSpecial(self, "A")
-
-    def attackWithSkillB(self):
-        print("Usando habilidad b")
-        
-    def attackWithSkillC(self):
-        print("Usando habilidad c")
-
-    def getCommonAttackOptions(self):
-        return Constants.COMMON_ATTACKS_ARCHER
+        enemy.takeDamageFromPlayerSpecial(self) #Lluvia de Flecha
 
     def getSpecialAttackOptions(self):
         return Constants.SPECIAL_ATTACKS_ARCHER
@@ -30,8 +21,3 @@ class Archer(Character):
     def getSpecialAttackDescription(self, option):
         if option == 1:
             return Constants.SPECIAL_ATTACK_A_DESC_ARCH
-        elif option == 2:
-            return Constants.SPECIAL_ATTACK_B_DESC_ARCH
-        elif option == 3:
-            return Constants.SPECIAL_ATTACK_C_DESC_ARCH
-
