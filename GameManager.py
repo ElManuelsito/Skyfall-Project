@@ -61,12 +61,16 @@ class GameManager:
             self.showMessage(Constants.INTRO_MESSAGE_MULDRAUGH)
         elif self.checkIfPlayerIsInLocation(POI.Riverside):
             self.showMessage(Constants.INTRO_MESSAGE_RIVERSIDE)
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES+6)
         while True:
             self.showCombinedMessage(Constants.WORLD_PLAYER_IS_IN_POI, player_info["location"])
+
             break
 
     def getTravelOptions(self):
-        pass
+        if self.checkIfPlayerIsInLocation(POI.Riverside):
+            for index in POI.Riverside.connected_locations:
+                pass
 
     def battle(self, enemy):
         pass

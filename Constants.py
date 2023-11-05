@@ -29,7 +29,6 @@
 
 
 # -------------------- Menu Related --------------------
-
 # [ PLAYER INTERACTION WITH SYSTEM]
 
 PLAYER_PROMPT_OPTION = "Opción: "
@@ -120,26 +119,26 @@ CHARACTER_CREATION_WORLD_SPAWNPOINTS = "\n1. Muldraugh\n2. Riverside\n"
 WARNING_MESSAGE_INVALID_SPAWNPOINT_CHOICE = "No existe ese lugar! Por favor elige donde quieres aparecer"
 CHARACTER_CREATION_WORLD_SPAWNPOINT_CONFIRMATION = "¿Deseas aparecer aquí? (si/no)"
 
+
+# -------------------- Exploration Related --------------------
 INTRO_MESSAGE_RIVERSIDE = "Comienza un nuevo día, te levantas de tu pequeña y miserable caja, la misma caja que ha " \
                           "actuado como tu hogar por ya no sabes cuánto tiempo.\nOtra día en donde la comida es escasa" \
                           " y lo único que hay en tu bolso es polvo y un vacío que representa tu voluntad de seguir en" \
                           " este estado deplorable.\n\nDecides ponerle un fin a este estilo de vida, haciendo el " \
-                          "último llamado: salir adelante o morir. Recoges tus únicas pertenencias, y emprendes viaje."
+                          "último llamado: salir adelante o morir. Recoges tus únicas pertenencias, y emprendes viaje." \
+                          "\n\n"
 INTRO_MESSAGE_MULDRAUGH = "Un punzante dolor te despierta de tu sueño repentino, todo tu alrededor parece dar vueltas" \
                           " y no logras alcanzar a comprender tu situación.\nTratas de recomponerte, y luego de un rato" \
                           " comienzas a recordar, esos bandidos se llevaron todo!\n\nSabías que venir a este reino no" \
                           " era buena idea, pero la invitación al Cuarto Real era muy tentadora para no aceptarla." \
                           " Recoges lo primero que encuentras entre la basura, y emprendes viaje para vengarte de " \
-                          "aquellos que te hicieron daño."
-
-# -------------------- Exploration Related --------------------
-
+                          "aquellos que te hicieron daño.\n\n"
 WORLD_PLAYER_IS_IN_POI = "Ahora mismo te encuentras en:"
 
-# -------------------- Combat Related --------------------
 
+# -------------------- Combat Related --------------------
 # [ GENERAL OPTIONS & MESSAGES ]
-COMBAT_OPTIONS = "Decide qué hacer:\n1. Ataques comunes     2. Habilidades\n" \
+COMBAT_OPTIONS = "Decide qué hacer:\n1. Ataque Común    2. Habilidades\n" \
                  "3. item                4. Huir\n"
 SPECIAL_ATTACK_CONFIRM = "¿Deseas usar esta habilidad? (si/no)"
 SOMEONE_ATTACKS = "ataca!"
@@ -152,31 +151,27 @@ SOMEONE_is_DEFEATED = "no puede continuar, y es derrotado!"
 
 
 # [ ARCHER ]
-COMMON_ATTACKS_ARCHER = "\nAtaques Comunes:\n1. Disparo Certero      2. Disparo Rápido\n"
 SPECIAL_ATTACKS_ARCHER = "\nHabilidades:\n1. Lluvia de flechas\n2. Flecha de fuego\n3. Ojo de Águila\n"
 SPECIAL_ATTACK_A_DESC_ARCH = "Lluvia de flechas:\n+ Daña multiples enemigos a la vez\n- Utiliza más Mana de lo normal\n"
 SPECIAL_ATTACK_B_DESC_ARCH = "Flecha de fuego:\n+ Enemigo recibe daño por turno dependiendo de tu INT\n+ Más daño de lo normal\n -20% Chance de no aplicar el efecto\n"
 SPECIAL_ATTACK_B_CHANCE_ARCH = 80
 SPECIAL_ATTACK_C_DESC_ARCH = "Ojo de Águila:\n+ Aumenta tu precisión por un turno\n"
 
-#[Wizard]
-COMMON_ATTACKS_WIZARD = "\nAtaques Comunes:\n1. Aurora Magica      2.Bastonazo\n"
+# [Wizard]
 SPECIAL_ATTACKS_WIZARD = "\nHabilidades:\n1. Bola de Fuego\n2. LLuvida de fuego\n3. Congelamiento \n"
 SPECIAL_ATTACK_A_DESC_WIZ = "Bola de Fuego:\n+ Mete mucho daño a un solo objetivo\n- Coste Intermedio de Mana\n"
 SPECIAL_ATTACK_B_DESC_WIZ = "Lluvia de Fuego:\n+ En una Zona circular cae una lluvia de fuego, donde mete daño en Area y afectando a mas de un enemigo\n+ Coste Alto de Mana\n"
 SPECIAL_ATTACK_C_DESC_WIZ = "Congelamiento:\n+ En una zona crea un escarcha de hielo provocando que los enemigos queden congelado y aturdido\n+ Coste Intermedio de Mana"
 SPECIAL_ATTACK_C_CHANCE_WIZ = 70
 
-#[Warrior]
-COMMON_ATTACKS_WARRIOR = "\nAtaques Comunes:\n1.Basico a Espada    2.Basico a Hacha\n"
+# [Warrior]
 SPECIAL_ATTACKS_WARRIOR = "\nHabilidades:\n1. Corte \n2. Spiral Splash \n3. Multiples cortes  \n"
 SPECIAL_ATTACK_A_DESC_WARR = "Corte:\n+ Provoca un daño intermedio a un objetivo \n- Coste bajo de Mana\n"
 SPECIAL_ATTACK_B_DESC_WARR = "Spiral Splash:\n+ Genera un espiral de fuego en la espada provocando daño a un objetivo\n+ Coste intermedio de Mana\n"
 IAL_ATTACK_B_CHANCE_WARR = 50
 SPECIAL_ATTACK_C_DESC_WARR = "Multix Cortes:\n+ Provoca multiples cortes a un objetivo, provocando mucho daño\n+ Coste Alto de mana"
 
-#[THIEF]
-COMMON_ATTACKS_THIEF = "\nAtaques Comunes:\n1.Basico a Daga"
+# [THIEF]
 SPECIAL_ATTACKS_THIEF = "\nHabilidades:\n1.Golpe bajo \n2. Corte desgarrador \n3. Golpe en los Riñones\n"
 SPECIAL_ATTACK_A_DESC_THIE = "Golpe Bajo:\n+ Provoca un daño intermedio a un objetivo golpeando en los puntos bajo \n- Coste bajo de Mana\n"
 SPECIAL_ATTACK_B_DESC_THIE = "Corte desgarrador:\n+  Provoca un corte con sangrado \n+ Coste intermedio de Mana\n"
@@ -184,39 +179,34 @@ SPECIAL_ATTACK_B_CHANCE_THIE = 70
 SPECIAL_ATTACK_C_DESC_THIE = "Golpe en los Riñones:\n+ Provoca mucho daño al objetivo logrando paralizarlo \n+ Coste Alto de mana"
 SPECIAL_ATTACK_C_CHANCE_THIE = 40
 
-#[SORCERER]
-COMMON_ATTACKS_SORC = "\nAtaques Comunes:\n1.Aurora magica"
+# [SORCERER]
 SPECIAL_ATTACKS_SORC = "\nHabilidades:\n1.Magia Control \n2. Invocacion bestia \n3. Fear\n"
 SPECIAL_ATTACK_A_DESC_SORC = "Magia Control :\n+ Controla por un breve momento al enemigo haciendo que se lastime el mismo \n- Coste intermedio de Mana\n"
 SPECIAL_ATTACK_B_DESC_SORC = "Invocacion Bestia:\n+ Invoca a una criatura que le ayuda a luchar provocando daño a un objetivo \n+ Coste Alto de Mana\n"
 SPECIAL_ATTACK_C_DESC_SORC = "Fear:\n+ Provoca un miedo al enemigo que hace que no ataque por un breve momento \n+ Coste intermedio  de mana"
 SPECIAL_ATTACK_C_CHANCE_SORC = 45
 
-#[Paladin]
-COMMON_ATTACKS_PAL = "\nAtaques Comunes:\n1.Ataque Basico con Espada"
+# [Paladin]
 SPECIAL_ATTACKS_PAL = "\nHabilidades:\n1.Sentencia \n2. Destello de luz  \n3. Golpe de Cruzado \n"
 SPECIAL_ATTACK_A_DESC_PAL = "Sentencia:\n+ Juzga al enemigo provocandole un daño con la espada sagrada \n- Coste Bajo de Mana\n"
 SPECIAL_ATTACK_B_DESC_PAL = "Destello de Luz:\n+ Invoca una luz que cae en el provocando curarce un 20% de su vida faltante \n+ Coste Alto de Mana\n"
 SPECIAL_ATTACK_C_DESC_PAL = "Golpe de Cruzada:\n+ Golpea al objetivo provocando un gran daño y aturdiendolo brevemente\n+ Coste intermedio  de mana"
 SPECIAL_ATTACK_C_CHANCE_PAL = 50
 
-#[NECROMANCER]
-COMMON_ATTACKS_NEC = "\nAtaques Comunes:\n1.Magia Dark   2.Basico con Daga"
+# [NECROMANCER]
 SPECIAL_ATTACKS_NEC = "\nHabilidades:\n1.Invoacion NO-MUERTO \n2. Invoaciones Infernales \n3. Descomposición \n"
 SPECIAL_ATTACK_A_DESC_NEC = "Invoacion NO-MUERTO:\n+ Invoca personas sin vida para atacar a un objetivo \n- Coste Bajo de Mana\n"
 SPECIAL_ATTACK_B_DESC_NEC = "Invoacion Infernal:\n+ Invoca Bestias del Infierno para dañar todo lo que se ponga por delante \n+ Coste Alto de Mana\n"
 SPECIAL_ATTACK_C_DESC_NEC = "Descomposición:\n+ Lanza una maldicion que hace que el objetivo se descomponga como si estuviera envenenado\n+ Coste intermedio de mana"
 SPECIAL_ATTACK_C_CHANCE_NEC = 50
 
-#[TANK]
-COMMON_ATTACKS_TANK = "\nAtaques Comunes:\n1.Basico con Espada"
+# [TANK]
 SPECIAL_ATTACKS_TANK = "\nHabilidades:\n1.Power up \n2. Focus \n3. Desesperacion \n"
 SPECIAL_ATTACK_A_DESC_TANK = "Power UP:\n+ Hace que su ataque aumente \n- Coste Bajo de Mana\n"
 SPECIAL_ATTACK_B_DESC_TANK = "Focus:\n+ Se concentra aumentando su defensa a todo tipo de daño \n+ Coste bajo de Mana\n"
 SPECIAL_ATTACK_C_DESC_TANK = "Desesperacion:\n+ Cuando ya se esta por rendir entra en su desesperacion aumentando drasticamente su defensa y daño \n+ Coste intermedio de mana"
 
 # [BARD]
-COMMON_ATTACKS_BARD = "\nAtaques Comunes:\n1. Basico Melodico   2. Rafaga melodica\n"
 SPECIAL_ATTACKS_BARD = "\nHabilidades:\n1.Ispiracion \n2. Curar \n3. Remover Efectos\n"
 SPECIAL_ATTACK_A_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \n- Coste Bajo de mana \n"
 SPECIAL_ATTACK_B_BARD = "Helear:\n+ Restaura un 40HP de vida \n+ Coste Intermedio de Mana \n"

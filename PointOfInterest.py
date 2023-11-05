@@ -4,13 +4,15 @@ class PointOfInterest:
                  possible_enemies,
                  possible_npcs,
                  possible_events,
-                 possible_items,):
+                 possible_items,
+                 connected_locations):
         self.name = name
         self.description = description
         self.possible_enemies = possible_enemies
         self.possible_npcs = possible_npcs
         self.possible_events = possible_events
         self.possible_items = possible_items
+        self.connected_locations = connected_locations
 
     def triggerEvent(self):
         pass
@@ -27,6 +29,7 @@ Muldraugh = PointOfInterest("Muldraugh",
                             possible_npcs=[],
                             possible_events=[],
                             possible_items=None,
+                            connected_locations=[]
                             )
 Riverside = PointOfInterest("Riverside",
                             "Una pequeña villa con habitantes memorables y una hospitalidad no encontrada en"
@@ -37,7 +40,8 @@ Riverside = PointOfInterest("Riverside",
                             possible_enemies=None,
                             possible_npcs=[],
                             possible_events=[],
-                            possible_items=None
+                            possible_items=None,
+                            connected_locations=[]
                             )
 
 
@@ -49,7 +53,8 @@ RiversideAlchemist = PointOfInterest("Todd el Alquimista",
                                      possible_enemies=None,
                                      possible_npcs=None,
                                      possible_events=None,
-                                     possible_items=[]
+                                     possible_items=[],
+                                     connected_locations=[]
                                      )
 RiversideBlacksmith = PointOfInterest("Howard el Herrero",
                                       "Un preciado herrero de la villa, joven,"
@@ -58,8 +63,22 @@ RiversideBlacksmith = PointOfInterest("Howard el Herrero",
                                       possible_enemies=None,
                                       possible_npcs=None,
                                       possible_events=None,
-                                      possible_items=[]
+                                      possible_items=[],
+                                      connected_locations=[]
                                       )
+MuldraughBlacksmith = PointOfInterest("Andre el Legendario Herrero",
+                                      "Un maestro de su arte, no hay explorador o viajero que no lo conozca.\nSe dice"
+                                      " que ha vivido por siglos, y que incluso ayudó al gran \"Ser de la Ceniza\","
+                                      " otro nombre importante dentro de la esfera aventurera, pero no lo reconoces.\n"
+                                      "Objetos y armamentos de excelente calidad garantizados si se tiene el capital "
+                                      "requerido.",
+                                      possible_enemies=None,
+                                      possible_npcs=None,
+                                      possible_events=None,
+                                      possible_items=[],
+                                      connected_locations=[]
+                                      )
+
 
 
 # -------------------- Dungeons (unsafe areas) --------------------
@@ -71,7 +90,8 @@ ForestOFMagic = PointOfInterest("Bosque de la Magia",
                                 possible_enemies=[],
                                 possible_npcs=None,
                                 possible_events=[],
-                                possible_items=[]
+                                possible_items=[],
+                                connected_locations=[]
                                 )
 DeepRockCaverns = PointOfInterest("Cavernas de la Profunda Roca",
                                   "Cuevas de hace mucho tiempo atrás, no es el lugar más seguro del planeta, pero "
@@ -80,7 +100,8 @@ DeepRockCaverns = PointOfInterest("Cavernas de la Profunda Roca",
                                   possible_enemies=[],
                                   possible_npcs=None,
                                   possible_events=[],
-                                  possible_items=[]
+                                  possible_items=[],
+                                  connected_locations=[]
                                   )
 VengefulMountains = PointOfInterest("Montañas Vengativas",
                                     "Altas montañas que no perdonan incluso al más bondadoso de los juglares.\nGran"
@@ -89,7 +110,25 @@ VengefulMountains = PointOfInterest("Montañas Vengativas",
                                     possible_enemies=[],
                                     possible_npcs=None,
                                     possible_events=[],
-                                    possible_items=[]
+                                    possible_items=[],
+                                    connected_locations=[]
                                     )
+
+# -------------------- Establishing Connections Between POIs --------------------
+Riverside.connected_locations = [RiversideBlacksmith,
+                                 RiversideAlchemist,
+                                 ForestOFMagic,
+                                 DeepRockCaverns]
+
+Muldraugh.connected_locations = [DeepRockCaverns,
+                                 MuldraughBlacksmith,
+                                 VengefulMountains]
+
+ForestOFMagic.connected_locations = [Riverside]
+
+DeepRockCaverns.connected_locations = [Riverside,
+                                       Muldraugh]
+
+VengefulMountains.connected_locations = [Muldraugh]
 
 
