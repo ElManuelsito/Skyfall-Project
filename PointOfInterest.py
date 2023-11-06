@@ -21,7 +21,7 @@ class PointOfInterest:
 # -------------------- Villages (populated and safe areas) --------------------
 
 Muldraugh = PointOfInterest("Muldraugh",
-                            "Un reino gobernado por familias corruptas desde milenio y niveles"
+                            "\nUn reino gobernado por familias corruptas desde milenio y niveles"
                             " de crimenes que pondrían\nhasta a el Paladin más fuerte preguntandose si de "
                             "verdad vale la pena vivir aquí.\nAl menos, las mercancías no decepcionan... "
                             "si se tiene un puñado de lo que tiene el rey, claro.\n",
@@ -32,7 +32,7 @@ Muldraugh = PointOfInterest("Muldraugh",
                             connected_locations=[]
                             )
 Riverside = PointOfInterest("Riverside",
-                            "Una pequeña villa con habitantes memorables y una hospitalidad no encontrada en"
+                            "\nUna pequeña villa con habitantes memorables y una hospitalidad no encontrada en"
                             " ningún otro reino.\nLuego de una disputa entre el rey y su mano derecha, esta villa nace "
                             "a modo de protesta contra las acciones y decisiones que el primero tomaba.\n\"Con un río y"
                             " dos manos no hay rey que haga falta\", demostró aquel segundo al mando."
@@ -80,11 +80,10 @@ MuldraughBlacksmith = PointOfInterest("Andre el Legendario Herrero",
                                       )
 
 
-
 # -------------------- Dungeons (unsafe areas) --------------------
 
 ForestOFMagic = PointOfInterest("Bosque de la Magia",
-                                "Un bosque caracterizado por su gran cantidad de recursos y enemigos leves.\n"
+                                "\nUn bosque caracterizado por su gran cantidad de recursos y enemigos leves.\n"
                                 "Es posible encontrar enemigos, armamentos y protecciones comunes. No ofrece"
                                 " mucho más que eso.\n",
                                 possible_enemies=[],
@@ -94,7 +93,7 @@ ForestOFMagic = PointOfInterest("Bosque de la Magia",
                                 connected_locations=[]
                                 )
 DeepRockCaverns = PointOfInterest("Cavernas de la Profunda Roca",
-                                  "Cuevas de hace mucho tiempo atrás, no es el lugar más seguro del planeta, pero "
+                                  "\nuevas de hace mucho tiempo atrás, no es el lugar más seguro del planeta, pero "
                                   "quien se atreva a aventurarlo será recompensado.\nEs necesario atravesar las cuevas"
                                   " si se quiere llegar al reino de Muldraugh.\n",
                                   possible_enemies=[],
@@ -104,7 +103,7 @@ DeepRockCaverns = PointOfInterest("Cavernas de la Profunda Roca",
                                   connected_locations=[]
                                   )
 VengefulMountains = PointOfInterest("Montañas Vengativas",
-                                    "Altas montañas que no perdonan incluso al más bondadoso de los juglares.\nGran"
+                                    "\nAltas montañas que no perdonan incluso al más bondadoso de los juglares.\nGran"
                                     " peligro acecha por estas partes, pero quien salga vivo volverá con riquezas "
                                     "considerables.\n",
                                     possible_enemies=[],
@@ -115,6 +114,7 @@ VengefulMountains = PointOfInterest("Montañas Vengativas",
                                     )
 
 # -------------------- Establishing Connections Between POIs --------------------
+
 Riverside.connected_locations = [RiversideBlacksmith,
                                  RiversideAlchemist,
                                  ForestOFMagic,

@@ -1,11 +1,11 @@
 # Ejecutable del juego, no cumple otra función más comenzarlo
-import pickle
-import time
-import Item
-import os
-import ClassesRPG.Archer as Cl_Archer
+# import pickle
+# import time
+# import Item
+# import os
+# import ClassesRPG.Archer as Cl_Archer
 
-# cualquier otra cosa que no sean estas 3 de abajo hay que borrarlas despues lol
+# cualquier otra cosa que no sean estas 3 de abajo hay que borrarlas después lol
 from GameManager import GameManager
 Manager = GameManager()
 Manager.initializeGame()
@@ -30,5 +30,4 @@ Manager.initializeGame()
 #     player_info = pickle.load(f)
 #     Player = pickle.load(f)
 #     f.close()
-
 #Hola
