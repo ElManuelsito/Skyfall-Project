@@ -16,6 +16,7 @@ import ClassesRPG.Thief as Cl_Thief
 import ClassesRPG.Warrior as Cl_Warrior
 import ClassesRPG.Wizard as Cl_Wizard
 import PointOfInterest as POI
+import Enemy
 import Constants
 import Item
 
@@ -36,7 +37,7 @@ class GameManager:
         while True:
             player_main_menu_choice = self.getPlayerChoice()
             self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-            if player_main_menu_choice == "1":
+            if player_main_menu_choice == "1":  # nueva partida
                 if os.path.isfile("savefile.pickle"):
                     if not self.confirmPlayerSaveFileDeletion():
                         return self.initializeGame()
@@ -49,12 +50,14 @@ class GameManager:
                 self.clearScreen()
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                 return self.beginGame()
-            elif player_main_menu_choice == "2":
-                pass # cargar la partida
-            elif player_main_menu_choice == "3":
-                pass # instrucciones / manual del juego
-            elif player_main_menu_choice == "4":
-                return None
+            elif player_main_menu_choice == "2":  # cargar partida
+                self.loadGame()
+                return self.idleState()
+            elif player_main_menu_choice == "3":  # instrucciones
+                self.clearScreen()
+                return self.initializeGame()
+            elif player_main_menu_choice == "4":  # salir
+                return exit(0)
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION)
 
@@ -67,6 +70,23 @@ class GameManager:
         self.waitForButtonPress(Constants.PRESS_ENTER_TO_CONTINUE)
         return self.idleState()
 
+    def idleState(self):
+        global player_info
+        global Player
+        Player.mana = Player.max_mana
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        while True:
+            self.showMessage(Constants.WORLD_PLAYER_DECIDE_WHAT_TO_DO)
+            player_world_decision = self.getPlayerChoice()
+            if player_world_decision == "1":  # viajar
+                return self.getTravelOptions(player_info["location"])
+            elif player_world_decision == "2":  # Inspeccionarse
+                self.showStats()
+                self.manageInventory()
+            elif player_world_decision == "3":  # guardar y salir
+                self.saveGame()
+                return exit(0)
+
     def getTravelOptions(self, location_classobj):
         global player_info
         self.showCombinedMessage(Constants.WORLD_PLAYER_IS_IN_POI, player_info["location"].name)
@@ -78,12 +98,13 @@ class GameManager:
             return self.confirmTravelOption(location_classobj)
 
     def confirmTravelOption(self, location_classobj):
-        global player_travel_choice_confirmation
         while True:
             while True:
                 player_travel_choice = self.getPlayerChoice()
                 if player_travel_choice.isnumeric():
                     break
+                elif player_travel_choice in Constants.PLAYER_PROMPT_TO_RETURN:
+                    return self.idleState()
                 else:
                     self.showWarning(Constants.WARNING_MESSAGE_CHOICE_IS_NOT_NUMERIC)
             for i in range(len(location_classobj.connected_locations)):
@@ -113,25 +134,50 @@ class GameManager:
         self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         if location_classobj.classification == "safe":
             player_info["location"] = location_classobj
-            return self.getTravelOptions(location_classobj)
+            self.showCombinedMessage(Constants.WORLD_PLAYER_HAS_ARRIVED_TO, location_classobj.name)
+            return self.idleState()
         elif location_classobj.classification == "shop":
             return self.shopping(location_classobj)
         elif location_classobj.classification == "unsafe":
-            if self.calculateChance(80):
-                return self.battle()
-            else:
-                player_info["location"] = location_classobj
-                return self.idleState()
-        elif location_classobj.classification == "searchable common":
+            player_info["location"] = location_classobj
+            return self.getBattleChance(location_classobj.classification)
+        else:
+            player_info["location"] = location_classobj
             self.getItemDropChanceAndGetItem(location_classobj.possible_items)
-        elif location_classobj.classification == "searchable uncommon":
-            self.getItemDropChanceAndGetItem(location_classobj.possible_items)
-        elif location_classobj.classification == "searchable legendary":
-            self.getItemDropChanceAndGetItem(location_classobj.possible_items)
+            return self.getBattleChance(location_classobj.classification)
 
-    def getBattleChance(self):
+    def getBattleChance(self, location_classification_str):
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showMessage(Constants.SOMEONE_APPROACHES)
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
         if random.random() < (80 / 100):
-            return self.battle()
+            return self.generateRandomEnemyAndFight(location_classification_str)
+        else:
+            self.showMessage(Constants.SOMEONE_APPROACHES_AND_IS_NOT_ENEMY)
+            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+            return self.idleState()
+
+    def generateRandomEnemyAndFight(self, location_classification_str):
+        self.showMessage(Constants.SOMEONE_APPROACHES_AND_IS_ENEMY)
+        if location_classification_str == "unsafe" or location_classification_str == "searchable common":
+            random_name = random.choice(Constants.ENEMY_NAMES)
+            random_health = Constants.RANDOM_ENEMY_HEALTH_FOR_COMMON_ITEMS_LOCATION
+            random_dmg = Constants.RANDOM_ENEMY_DMG_FOR_COMMON_ITEMS_LOCATION
+            RandomEnemy = Enemy.Enemy(random_name, random_health, random_dmg)
+            return self.battle(RandomEnemy, "low")
+        elif location_classification_str == "searchable uncommon":
+            random_name = random.choice(Constants.ENEMY_NAMES)
+            random_health = Constants.RANDOM_ENEMY_HEALTH_FOR_UNCOMMON_ITEMS_LOCATION
+            random_dmg = Constants.RANDOM_ENEMY_DMG_FOR_UNCOMMON_ITEMS_LOCATION
+            RandomEnemy = Enemy.Enemy(random_name, random_health, random_dmg)
+            return self.battle(RandomEnemy, "medium")
+        elif location_classification_str == "searchable legendary":
+            random_name = random.choice(Constants.ENEMY_NAMES)
+            random_health = Constants.RANDOM_ENEMY_HEALTH_FOR_LEGENDARY_ITEMS_LOCATION
+            random_dmg = Constants.RANDOM_ENEMY_DMG_FOR_LEGENDARY_ITEMS_LOCATION
+            RandomEnemy = Enemy.Enemy(random_name, random_health, random_dmg)
+            return self.battle(RandomEnemy, "high")
 
     def getItemDropChanceAndGetItem(self, item_list):
         item_pool = []
@@ -145,43 +191,29 @@ class GameManager:
                 self.showCombinedMessage(Constants.WORLD_FORAGE_ITEM_FOUND, item_to_be_found.name)
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                 self.saveGame()
-                return self.getBattleChance()
+                return None
             if item_to_be_found.item_type == "potion":
                 player_info["backpack_items"]["potions"].append(item_to_be_found)
                 self.showCombinedMessage(Constants.WORLD_FORAGE_ITEM_FOUND, item_to_be_found.name)
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                 self.saveGame()
-                return self.getBattleChance()
+                return None
             if item_to_be_found.item_type == "armor":
                 player_info["backpack_items"]["armors"].append(item_to_be_found)
                 self.showCombinedMessage(Constants.WORLD_FORAGE_ITEM_FOUND, item_to_be_found.name)
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                 self.saveGame()
-                return self.getBattleChance()
+                return None
         else:
             self.showMessage(Constants.WORLD_FORAGE_NO_ITEM_FOUND)
             self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
             self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
             return self.idleState()
 
-    def idleState(self):
-        global player_info
-        global Player
-        while True:
-            player_world_decision = self.getPlayerChoice()
-            if player_world_decision == "1":  # viajar
-                return self.getTravelOptions(player_info["location"])
-            elif player_world_decision == "2":  # Inspeccionarse
-                self.showStats()
-                self.manageInventory()
-            elif player_world_decision == "3":  # guardar y salir
-                self.saveGame()
-                return exit(0)
-
     def showStats(self):
         global Player
         self.showMessage("\n"+f"|| {Player.name} ||"+"\n")
-        self.showMessage(f"Salud: {Player.health}\n"
+        self.showMessage(f"Salud: {Player.health:.2f}\n"
                          f"Defensa: {Player.armor}\n"
                          f"Mana: {Player.mana}\n"
                          f"Fuerza: {Player.str}\n"
@@ -195,7 +227,7 @@ class GameManager:
                          f"Nivel: {Player.lvl}\n"
                          f"Experiencia: {Player.exp}/100\n")
 
-    def manageInventory(self):
+    def manageInventory(self, shop=False, battle=False):
         global player_info
         self.showMessage(Constants.PLAYER_INVENTORY_MESSAGE)
         counter_for_potions = 0
@@ -227,162 +259,359 @@ class GameManager:
                 self.showMessage(f"{counter_for_armors + 1}. {player_info["armors"][i]}")
                 counter_for_armors = counter_for_armors + 1
                 possible_inventory_choices[f"{counter_for_armors}"] = player_info["potions"][i]
+        self.showMessage(Constants.PLAYER_INVENTORY_MESSAGE_ACTIONS)
         while True:
-            self.showMessage(Constants.PLAYER_INVENTORY_MESSAGE_ACTIONS)
             player_inventory_action_choice = self.getPlayerChoice()
             if player_inventory_action_choice in Constants.PLAYER_INVENTORY_ACTION_SET_SELECT:
-                player_inventory_item_selected = self.getPlayerChoice(Constants.PLAYER_PROMPT_ITEM_NUMBER)
-                self.showMessage(Constants.PLAYER_INVENTORY_SELECTED_ITEM_OPTIONS)
-                while True:
-                    player_inventory_selected_item_action_choice = self.getPlayerChoice()
-                    if player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_DISCARD:  # descarta el item
-                        if possible_inventory_choices[player_inventory_item_selected].item_type == "weapon":
-                            player_info["backpack_items"]["weapons"].remove(
-                                possible_inventory_choices[player_inventory_item_selected])
-                            self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
-                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                            return self.manageInventory()
-                        elif possible_inventory_choices[player_inventory_item_selected].item_type == "potion":
-                            player_info["backpack_items"]["potions"].remove(
-                                possible_inventory_choices[player_inventory_item_selected])
-                            self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
-                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                            return self.manageInventory()
-                        elif possible_inventory_choices[player_inventory_item_selected].item_type == "armor":
-                            player_info["backpack_items"]["armors"].remove(
-                                possible_inventory_choices[player_inventory_item_selected])
-                            self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
-                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                            return self.manageInventory()
-                    elif player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_EQUIP:  # se equipa el item
-                        if possible_inventory_choices[player_inventory_item_selected].item_type == "weapon":
-                            if player_info["weapon_1"]:
-                                self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_WEAPON)
-                                player_inventory_replace_weapon_choice = self.getPlayerChoice()
-                                while True:
-                                    if player_inventory_replace_weapon_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                                        player_info["backpack_items"]["weapons"].append(player_info["weapon_1"])
-                                        weapon_new_equipped = possible_inventory_choices[player_inventory_item_selected]
-                                        player_info["backpack_items"]["weapons"].remove(possible_inventory_choices[player_inventory_item_selected])
-                                        player_info["weapon_1"] = weapon_new_equipped
-                                        self.showMessage(Constants.PLAYER_INVENTORY_NEW_WEAPON_EQUIPPED)
-                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                        return self.manageInventory()
-                                    elif player_inventory_replace_weapon_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
-                                        break
-                                    else:
-                                        self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
-                                break
+                if len(possible_inventory_choices) > 0:
+                    player_inventory_item_selected = self.getPlayerChoice(Constants.PLAYER_PROMPT_ITEM_NUMBER)
+                    self.showMessage(Constants.PLAYER_INVENTORY_SELECTED_ITEM_OPTIONS)
+                    while True:
+                        player_inventory_selected_item_action_choice = self.getPlayerChoice()
+                        if player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_DISCARD:  # descarta el item
+                            if possible_inventory_choices[player_inventory_item_selected].item_type == "weapon":
+                                player_info["backpack_items"]["weapons"].remove(
+                                    possible_inventory_choices[player_inventory_item_selected])
+                                self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
+                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                return self.manageInventory()
+                            elif possible_inventory_choices[player_inventory_item_selected].item_type == "potion":
+                                player_info["backpack_items"]["potions"].remove(
+                                    possible_inventory_choices[player_inventory_item_selected])
+                                self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
+                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                return self.manageInventory()
                             elif possible_inventory_choices[player_inventory_item_selected].item_type == "armor":
-                                if player_info["helmet"]:
-                                    self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
-                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                    player_inventory_replace_armor_choice = self.getPlayerChoice()
-                                    while True:
-                                        if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                                            player_info["backpack_items"]["armors"].append(player_info["helmet"])
-                                            armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
-                                            player_info["backpack_items"]["armors"].remove(
-                                                possible_inventory_choices[player_inventory_item_selected])
-                                            player_info["helmet"] = armor_new_equipped
-                                            self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
-                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                            return self.manageInventory()
-                                        elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
-                                            break
-                                        else:
-                                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
-                                    break
-                                elif player_info["breastplate"]:
-                                    self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
-                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                    player_inventory_replace_armor_choice = self.getPlayerChoice()
-                                    while True:
-                                        if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                                            player_info["backpack_items"]["armors"].append(player_info["breastplate"])
-                                            armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
-                                            player_info["backpack_items"]["armors"].remove(
-                                                possible_inventory_choices[player_inventory_item_selected])
-                                            player_info["breastplate"] = armor_new_equipped
-                                            self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
-                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                            return self.manageInventory()
-                                        elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
-                                            break
-                                        else:
-                                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
-                                    break
-                                elif player_info["chausses"]:
-                                    self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
-                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                    player_inventory_replace_armor_choice = self.getPlayerChoice()
-                                    while True:
-                                        if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                                            player_info["backpack_items"]["armors"].append(player_info["chausses"])
-                                            armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
-                                            player_info["backpack_items"]["armors"].remove(
-                                                possible_inventory_choices[player_inventory_item_selected])
-                                            player_info["chausses"] = armor_new_equipped
-                                            self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
-                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                            return self.manageInventory()
-                                        elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
-                                            break
-                                        else:
-                                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
-                                    break
-                                elif player_info["gauntlets"]:
-                                    self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
-                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                    player_inventory_replace_armor_choice = self.getPlayerChoice()
-                                    while True:
-                                        if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
-                                            player_info["backpack_items"]["armors"].append(player_info["gauntlets"])
-                                            armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
-                                            player_info["backpack_items"]["armors"].remove(
-                                                possible_inventory_choices[player_inventory_item_selected])
-                                            player_info["gauntlets"] = armor_new_equipped
-                                            self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
-                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                            return self.manageInventory()
-                                        elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
-                                            break
-                                        else:
-                                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
-                                    break
-                            else:
-                                self.showMessage(Constants.PLAYER_INVENTORY_CANNOT_EQUIP_ITEM)
-                    elif player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_USE:  # usa un item
-                        if possible_inventory_choices[player_inventory_item_selected].item_type == "potion":
-                            if player_info["backpack_items"]["potions"][int(player_inventory_item_selected) - 1].name == Item.PotionHealingSmall.name:
-                                player_info["backpack_items"]["potions"].remove(possible_inventory_choices[player_inventory_item_selected])
-                                Player.health = Player.health + Item.PotionHealingSmall.dmg
-                                self.showCombinedMessage(Constants.PLAYER_USED_HEALING_MESSAGE_START,
-                                                         Item.PotionHealingSmall.dmg,
-                                                         Constants.PLAYER_USED_HEALING_MESSAGE_HP)
+                                player_info["backpack_items"]["armors"].remove(
+                                    possible_inventory_choices[player_inventory_item_selected])
+                                self.showCombinedMessage(Constants.PLAYER_INVENTORY_ITEM_WAS_DISCARDED, possible_inventory_choices[player_inventory_item_selected].name)
                                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
                                 return self.manageInventory()
-                            elif player_info["backpack_items"]["potions"][int(player_inventory_item_selected) - 1].name == Item.PotionManaSmall.name:
-                                player_info["backpack_items"]["potions"].remove(possible_inventory_choices[player_inventory_item_selected])
-                                Player.mana = Player.mana + Item.PotionManaSmall.dmg
-                                self.showCombinedMessage(Constants.PLAYER_USED_MANA_MESSAGE_START,
-                                                         Item.PotionManaSmall.dmg,
-                                                         Constants.PLAYER_USED_MANA_MESSAGE_SK)
-                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
-                                return self.manageInventory()
-                    else:
-                        self.showWarning(Constants.WARNING_MESSAGE_INVALID_INVENTORY_ITEM_ACTION)
-            elif player_inventory_action_choice in Constants.PLAYER_INVENTORY_ACTION_SET_RETURN:
+                        elif player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_EQUIP:  # se equipa el item
+                            if possible_inventory_choices[player_inventory_item_selected].item_type == "weapon":
+                                if player_info["weapon_1"]:
+                                    self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_WEAPON)
+                                    player_inventory_replace_weapon_choice = self.getPlayerChoice()
+                                    while True:
+                                        if player_inventory_replace_weapon_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                            player_info["backpack_items"]["weapons"].append(player_info["weapon_1"])
+                                            weapon_new_equipped = possible_inventory_choices[player_inventory_item_selected]
+                                            player_info["backpack_items"]["weapons"].remove(possible_inventory_choices[player_inventory_item_selected])
+                                            player_info["weapon_1"] = weapon_new_equipped
+                                            self.showMessage(Constants.PLAYER_INVENTORY_NEW_WEAPON_EQUIPPED)
+                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                            return self.manageInventory()
+                                        elif player_inventory_replace_weapon_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                            break
+                                        else:
+                                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                    break
+                                elif possible_inventory_choices[player_inventory_item_selected].item_type == "armor":
+                                    if player_info["helmet"]:
+                                        self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
+                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                        player_inventory_replace_armor_choice = self.getPlayerChoice()
+                                        while True:
+                                            if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                                player_info["backpack_items"]["armors"].append(player_info["helmet"])
+                                                armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
+                                                player_info["backpack_items"]["armors"].remove(
+                                                    possible_inventory_choices[player_inventory_item_selected])
+                                                player_info["helmet"] = armor_new_equipped
+                                                self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                return self.manageInventory()
+                                            elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                                break
+                                            else:
+                                                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                        break
+                                    elif player_info["breastplate"]:
+                                        self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
+                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                        player_inventory_replace_armor_choice = self.getPlayerChoice()
+                                        while True:
+                                            if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                                player_info["backpack_items"]["armors"].append(player_info["breastplate"])
+                                                armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
+                                                player_info["backpack_items"]["armors"].remove(
+                                                    possible_inventory_choices[player_inventory_item_selected])
+                                                player_info["breastplate"] = armor_new_equipped
+                                                self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                return self.manageInventory()
+                                            elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                                break
+                                            else:
+                                                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                        break
+                                    elif player_info["chausses"]:
+                                        self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
+                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                        player_inventory_replace_armor_choice = self.getPlayerChoice()
+                                        while True:
+                                            if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                                player_info["backpack_items"]["armors"].append(player_info["chausses"])
+                                                armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
+                                                player_info["backpack_items"]["armors"].remove(
+                                                    possible_inventory_choices[player_inventory_item_selected])
+                                                player_info["chausses"] = armor_new_equipped
+                                                self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                return self.manageInventory()
+                                            elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                                break
+                                            else:
+                                                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                        break
+                                    elif player_info["gauntlets"]:
+                                        self.showMessage(Constants.PLAYER_INVENTORY_ALREADY_HAS_ARMOR)
+                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                        player_inventory_replace_armor_choice = self.getPlayerChoice()
+                                        while True:
+                                            if player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                                player_info["backpack_items"]["armors"].append(player_info["gauntlets"])
+                                                armor_new_equipped = possible_inventory_choices[player_inventory_item_selected]
+                                                player_info["backpack_items"]["armors"].remove(
+                                                    possible_inventory_choices[player_inventory_item_selected])
+                                                player_info["gauntlets"] = armor_new_equipped
+                                                self.showMessage(Constants.PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                return self.manageInventory()
+                                            elif player_inventory_replace_armor_choice in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                                break
+                                            else:
+                                                self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                        break
+                                else:
+                                    self.showMessage(Constants.PLAYER_INVENTORY_CANNOT_EQUIP_ITEM)
+                        elif player_inventory_selected_item_action_choice == Constants.PLAYER_INVENTORY_ACTION_SET_USE:  # usa un item
+                            if possible_inventory_choices[player_inventory_item_selected].item_type == "potion":
+                                if player_info["backpack_items"]["potions"][int(player_inventory_item_selected) - 1].name == Item.PotionHealingSmall.name:
+                                    if (Player.health + Item.PotionHealingSmall.dmg) >= Player.max_health:
+                                        player_info["backpack_items"]["potions"].remove(
+                                            possible_inventory_choices[player_inventory_item_selected])
+                                        Player.health = Player.max_health
+                                        self.showCombinedMessage(Constants.PLAYER_HEALS_MESSAGE,
+                                                                     Item.PotionHealingSmall.dmg,
+                                                                     Constants.ACRONYM_MESSAGE_HP)
+                                    elif Player.health == Player.max_health:
+                                        self.showMessage(Constants.PLAYER_CANNOT_HEAL_MESSAGE)
+                                    else:
+                                        player_info["backpack_items"]["potions"].remove(
+                                            possible_inventory_choices[player_inventory_item_selected])
+                                        Player.health = Player.health + Item.PotionHealingSmall.dmg
+                                        self.showCombinedMessage(Constants.PLAYER_HEALS_MESSAGE,
+                                                                 Item.PotionHealingSmall.dmg,
+                                                                 Constants.ACRONYM_MESSAGE_HP)
+                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                    return self.manageInventory()
+                                elif player_info["backpack_items"]["potions"][int(player_inventory_item_selected) - 1].name == Item.PotionManaSmall.name:
+                                    if (Player.mana + Item.PotionManaSmall.dmg) >= Player.max_mana:
+                                        player_info["backpack_items"]["potions"].remove(
+                                            possible_inventory_choices[player_inventory_item_selected])
+                                        Player.mana = Player.max_mana
+                                        self.showCombinedMessage(Constants.PLAYER_RESTORES_MANA_MESSAGE,
+                                                                     Item.PotionManaSmall.dmg,
+                                                                     Constants.ACRONYM_MESSAGE_SK)
+                                    elif Player.mana == Player.max_mana:
+                                        self.showMessage(Constants.PLAYER_CANNOT_RESTORE_MANA_MESSAGE)
+                                    else:
+                                        player_info["backpack_items"]["potions"].remove(
+                                            possible_inventory_choices[player_inventory_item_selected])
+                                        Player.mana = Player.mana + Item.PotionManaSmall.dmg
+                                        self.showCombinedMessage(Constants.PLAYER_RESTORES_MANA_MESSAGE,
+                                                                 Item.PotionManaSmall.dmg,
+                                                                 Constants.ACRONYM_MESSAGE_SK)
+                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                    return self.manageInventory()
+                        else:
+                            self.showWarning(Constants.WARNING_MESSAGE_INVALID_INVENTORY_ITEM_ACTION)
+                else:
+                    self.showWarning(Constants.WARNING_MESSAGE_PLAYER_HAS_NO_ITEMS_TO_CHANGE)
+            elif player_inventory_action_choice in Constants.PLAYER_PROMPT_TO_RETURN:
                 self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                if battle:
+                    return
                 return self.idleState()
             else:
                 self.showWarning(Constants.WARNING_MESSAGE_INVALID_INVENTORY_ACTION)
 
-
     def shopping(self, shop_classobj):
         print("no fuimo de choppin")
-    def battle(self, enemy):
-        pass
+        self.waitForButtonPress()
+        return self.idleState()
+
+    def gameOver(self):
+        self.clearScreen()
+        self.showMessage(Constants.PLAYER_DIED)
+        self.showMessage(Constants.GAME_OVER)
+        while True:
+            player_game_over_option_choice = self.getPlayerChoice()
+            if player_game_over_option_choice == "1":
+                self.loadGame()
+                return self.idleState()
+            elif player_game_over_option_choice == "2":
+                return exit(0)
+            else:
+                self.showWarning(Constants.WARNING_MESSAGE_INVALID_GAME_OVER_SCREEN_OPTION)
+
+    def battle(self, enemy, risk):
+        global Player
+        global player_info
+        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+        self.showCombinedMessage(Constants.SOMEONE_IS_ENEMY, enemy.name,Constants.SOMEONE_IS_ENEMY_AND_READY_TO_ATTACK)
+        enemy_max_health = enemy.health
+        while True:
+            if Player.mana <= 0:
+                self.showCombinedMessage("\n"+enemy.name, "\n"+f"Hp: {enemy.health}/{enemy_max_health}"+"\n\n")
+                self.showCombinedMessage(Player.name, "\n"+f"Hp: {Player.health:.2f}/{Player.max_health}", "\n"+f"Sk: 0/{Player.max_mana}"+"\n\n")
+                self.showMessage(Constants.COMBAT_OPTIONS)
+            else:
+                self.showCombinedMessage("\n"+enemy.name, "\n"+f"Hp: {enemy.health}/{enemy_max_health}"+"\n\n")
+                self.showCombinedMessage(Player.name, "\n"+f"Hp: {Player.health:.2f}/{Player.max_health}", "\n"+f"Sk: {Player.mana}/{Player.max_mana}"+"\n\n")
+                self.showMessage(Constants.COMBAT_OPTIONS)
+            while True:
+                player_battle_option_choice = self.getPlayerChoice()
+                if player_battle_option_choice == "1":
+                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    self.showCombinedMessage(Player.name, Constants.SOMEONE_ATTACKS)
+                    enemy_current_health = enemy.health
+                    if enemy.takeDamageFromPlayerCommon(Player, player_info):
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        return self.givePlayerRewardAfterVictory(enemy, risk)
+                    else:
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        if enemy_current_health != enemy.health:
+                            self.showCombinedMessage(enemy.name, Constants.SOMEONE_RECEIVES_DAMAGE, (enemy_current_health - enemy.health),"\n")
+                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                            self.showCombinedMessage(enemy.name, Constants.SOMEONE_ATTACKS)
+                            if enemy.attack(Player):
+                                return self.gameOver()
+                            else:
+                                self.showCombinedMessage(Player.name, Constants.SOMEONE_RECEIVES_DAMAGE, enemy.dmg, "\n")
+                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        else:
+                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                            self.showCombinedMessage(enemy.name, Constants.SOMEONE_ATTACKS)
+                            if enemy.attack(Player):
+                                return self.gameOver()
+                            else:
+                                self.showCombinedMessage(Player.name, Constants.SOMEONE_RECEIVES_DAMAGE, enemy.dmg, "\n")
+                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        break
+                elif player_battle_option_choice == "2":
+                    if Player.mana <= 0:
+                        self.showWarning(Constants.PLAYER_IS_OUT_OF_MANA)
+                        continue
+                    else:
+                        self.showMessage(Player.getSpecialAttackOptions())
+                        while True:
+                            player_special_attack_choice = self.getPlayerChoice()
+                            if player_special_attack_choice == "1":
+                                self.showMessage(Player.getSpecialAttackDescription())
+                                self.showMessage(Constants.SPECIAL_ATTACK_CONFIRM)
+                                while True:
+                                    player_special_attack_choice_confirmation = self.getPlayerChoice()
+                                    if player_special_attack_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_YES:
+                                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                        self.showCombinedMessage(Player.name, Constants.SOMEONE_ATTACKS)
+                                        enemy_current_health = enemy.health
+                                        if enemy.takeDamageFromPlayerSpecial(Player, player_info):
+                                            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                            return self.givePlayerRewardAfterVictory(enemy, risk)
+                                        else:
+                                            if enemy_current_health != enemy.health:
+                                                self.showCombinedMessage(enemy.name,
+                                                                         Constants.SOMEONE_RECEIVES_DAMAGE,
+                                                                         (enemy_current_health - enemy.health), "\n")
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                self.showCombinedMessage(enemy.name, Constants.SOMEONE_ATTACKS)
+                                                if enemy.attack(Player):
+                                                    return self.gameOver()
+                                                else:
+                                                    self.showCombinedMessage(Player.name,
+                                                                             Constants.SOMEONE_RECEIVES_DAMAGE,
+                                                                             enemy.dmg, "\n")
+                                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                            else:
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                                self.showCombinedMessage(enemy.name, Constants.SOMEONE_ATTACKS)
+                                                if enemy.attack(Player):
+                                                    return self.gameOver()
+                                                else:
+                                                    self.showCombinedMessage(Player.name,
+                                                                             Constants.SOMEONE_RECEIVES_DAMAGE,
+                                                                             enemy.dmg, "\n")
+                                                    self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                                            break
+                                    elif player_special_attack_choice_confirmation in Constants.PLAYER_PROMPT_SET_FOR_NO:
+                                        break
+                                    else:
+                                        self.showWarning(Constants.WARNING_MESSAGE_INVALID_YES_OR_NO_CONFIRMATION)
+                                break
+                            else:
+                                self.showWarning(Constants.WARNING_MESSAGE_INVALID_SPECIAL_ATTACK)
+                        break
+                elif player_battle_option_choice == "3":
+                    self.manageInventory(False, True)
+                    break
+                elif player_battle_option_choice == "4":
+                    if self.calculateChance(90):
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.showCombinedMessage(Player.name, Constants.SOMEONE_FLED)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.showMessage(Constants.SOMEONE_FLED_AND_SUCCEEDED)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        return self.idleState()
+                    else:
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.showCombinedMessage(Player.name, Constants.SOMEONE_FLED)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                        self.showMessage(Constants.SOMEONE_FLED_AND_FAILED)
+                        self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+                    break
+
+    def givePlayerRewardAfterVictory(self, enemy, risk):
+        global player_info
+        global Player
+        if risk == "low":  # player will earn between 20 and 90 gold
+            money_amount = str(random.randint(20, 90))
+            self.showCombinedMessage(enemy.name,
+                                     Constants.SOMEONE_IS_DEFEATED,
+                                     Constants.PLAYER_WINS,
+                                     Constants.PLAYER_EARNS_MONEY_START,
+                                     str(money_amount),
+                                     Constants.PLAYER_EARNS_MONEY_END)
+            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+            Player.money = money_amount
+        elif risk == "medium":  # player will earn between 100 and 180 gold
+            money_amount = random.randint(100, 180)
+            self.showCombinedMessage(enemy.name,
+                                     Constants.SOMEONE_IS_DEFEATED,
+                                     Constants.PLAYER_WINS,
+                                     Constants.PLAYER_EARNS_MONEY_START,
+                                     str(money_amount),
+                                     Constants.PLAYER_EARNS_MONEY_END)
+            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+            Player.money = money_amount
+        elif risk == "high":  # player will earn between 230 and 300 gold
+            money_amount = random.randint(230, 300)
+            self.showCombinedMessage(enemy.name,
+                                     Constants.SOMEONE_IS_DEFEATED,
+                                     Constants.PLAYER_WINS,
+                                     Constants.PLAYER_EARNS_MONEY_START,
+                                     str(money_amount),
+                                     Constants.PLAYER_EARNS_MONEY_END)
+            self.waitSeconds(Constants.TIME_BETWEEN_MESSAGES)
+            Player.money = money_amount
+        return self.idleState()
 
     def createCharacter(self):
         global player_info
@@ -681,15 +910,6 @@ class GameManager:
         else:
             return False
 
-    def calculateEnemyHealthAfterPlayerAttack(self, stat, health, stat_bonus_divider):
-        global player_info
-        if self.calculateChance((70 + ((70 * stat) / 100))):
-            final_health = health - (player_info["weapon_1"].dmg + ((player_info["weapon_1"] * stat) / stat_bonus_divider))
-            return float(f"{final_health:.2f}")
-        else:
-            self.showCombinedMessage(Player.name, Constants.SOMEONE_ATTACKS_AND_MISSES)
-            return health
-
     def getPlayerChoice(self, prompt=Constants.PLAYER_PROMPT_OPTION):
         # por defecto hará input("Opción: "), ingresar argumento para cambiar el mensaje
         return input(prompt)
@@ -705,6 +925,16 @@ class GameManager:
             player_info = pickle.load(f)
             Player = pickle.load(f)
             f.close()
+        return None
+
+    def loadGame(self):
+        global player_info
+        global Player
+        with open("savefile.pickle", "rb") as f:
+            player_info = pickle.load(f)
+            Player = pickle.load(f)
+            f.close()
+        return None
 
     def clearScreen(self):
         return os.system("cls")

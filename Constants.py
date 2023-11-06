@@ -4,7 +4,7 @@
 # MENU = "1- Entrar al juego" \
 #        "2- Etc."
 # MAX_PLAYERS = 5
-
+import random
 
 # -------------------- Menu Related --------------------
 # [ PLAYER INTERACTION WITH SYSTEM]
@@ -27,6 +27,7 @@ MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU = "\nVolviendo al menu
 MAIN_MENU_MESSAGE_GAME_LOADING = "\n\n\n\nCargando mundo..."
 PLAYER_PROMPT_SET_FOR_YES = {"s", "S", "si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}   # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
 PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                           # misma estructura, pero para "No"
+PLAYER_PROMPT_TO_RETURN = {"volver", "Volver", "VOLVER"}
 PLAYER_INVENTORY_MESSAGE = "Actualmente tienes estos items:\n"
 PLAYER_INVENTORY_MESSAGE_WEAPONS = "\nArmas:"
 PLAYER_INVENTORY_MESSAGE_POTIONS = "\nPociones:"
@@ -35,11 +36,11 @@ PLAYER_INVENTORY_MESSAGE_NO_ITEMS = "No tienes ningún item de este tipo"
 PLAYER_INVENTORY_MESSAGE_ACTIONS = "Decide qué quieres hacer (seleccionar/volver)"
 WARNING_MESSAGE_INVALID_INVENTORY_ACTION = "Por favor solo ingresa \"seleccionar\" o \"volver\""
 WARNING_MESSAGE_INVALID_INVENTORY_ITEM_ACTION = "Por favor solo ingresa \"descartar\", \"equipar\" o \"usar\""
-PLAYER_INVENTORY_ACTION_SET_SELECT = {"seleccionar"}
-PLAYER_INVENTORY_ACTION_SET_RETURN = {"volver"}
-PLAYER_INVENTORY_ACTION_SET_DISCARD = {"descartar"}
-PLAYER_INVENTORY_ACTION_SET_EQUIP = {"equipar"}
-PLAYER_INVENTORY_ACTION_SET_USE = {"usar"}
+PLAYER_INVENTORY_ACTION_SET_SELECT = {"seleccionar", "Seleccionar", "SELECCIONAR"}
+PLAYER_INVENTORY_ACTION_SET_DISCARD = {"descartar", "Descartar", "DESCARTAR"}
+PLAYER_INVENTORY_ACTION_SET_EQUIP = {"equipar", "Equipar", "EQUIPAR"}
+PLAYER_INVENTORY_ACTION_SET_USE = {"usar", "Usar", "USAR"}
+WARNING_MESSAGE_PLAYER_HAS_NO_ITEMS_TO_CHANGE = "No tienes ningún item por ahora, no hay nada que seleccionar"
 PLAYER_INVENTORY_SELECTED_ITEM = "Item seleccionado:"
 PLAYER_INVENTORY_SELECTED_ITEM_OPTIONS = "¿Qué deseas hacer con él? (descartar/equipar/usar)"
 PLAYER_INVENTORY_ALREADY_HAS_WEAPON = "Ya tienes un arma equipada, ¿quieres reemplazarla? (si/no)"
@@ -135,43 +136,78 @@ INTRO_MESSAGE_MULDRAUGH = "Un punzante dolor te despierta de tu sueño repentino
                           "\nRecoges lo primero que encuentras entre la basura, y emprendes viaje para vengarte de " \
                           "aquellos que te hicieron daño.\n"
 
-WORLD_PLAYER_DECIDE_WHAT_TO_DO = "Decide qué hacer:\n\n1. Viajar\n2. Inspeccionarse\n3. Guardar y salir\n"
+WORLD_PLAYER_DECIDE_WHAT_TO_DO = "\nDecide qué hacer:\n\n1. Viajar\n2. Inspeccionarse\n3. Guardar y salir\n"
 WORLD_PLAYER_IS_IN_POI = "Ahora mismo te encuentras en:"
-WORLD_AVAILABLE_POI = "Lugares disponibles:"
+WORLD_AVAILABLE_POI = "Lugares disponibles (puede regresar ingresando \"volver\"):"
 WORLD_TRAVEL_CONFIRMATION = "¿Deseas ir aquí? (si/no)"
 WORLD_TRAVEL_GOING_TO_PLACE = "\nEstas en camino a:"
 WARNING_MESSAGE_INVALID_TRAVEL_CHOICE = "No existe ese lugar, por favor selecciona una de las opciones."
 WORLD_FORAGE_ITEM_FOUND = "\nHas encontrado algo! Encontraste:"
 WORLD_FORAGE_NO_ITEM_FOUND = "\nNo has encontrado nada..."
+WORLD_PLAYER_HAS_ARRIVED_TO = "\nHas llegado con éxito a:"
 
 # -------------------- Combat Related --------------------
 # [ GENERAL OPTIONS & MESSAGES ]
-COMBAT_OPTIONS = "Decide qué hacer:\n1. Ataque comun     2. Habilidades\n" \
-                 "3. item                4. Huir\n"
+COMBAT_OPTIONS = "Decide qué hacer:\n1. Ataque común     2. Habilidad\n" \
+                 "3. item             4. Huir\n"
 SPECIAL_ATTACK_CONFIRM = "¿Deseas usar esta habilidad? (si/no)"
+SOMEONE_APPROACHES = "\nFiguras extrañas se acercan hacía tí..."
+SOMEONE_APPROACHES_AND_IS_NOT_ENEMY = "Pero no pasó nada.\n"
+SOMEONE_APPROACHES_AND_IS_ENEMY = "Y buscan pelea!\n"
+SOMEONE_IS_ENEMY = "Enemigo"
+SOMEONE_IS_ENEMY_AND_READY_TO_ATTACK = "está listo para atacar!"
 SOMEONE_ATTACKS = "ataca!"
 SOMEONE_ATTACKS_AND_MISSES = "intentó atacar, pero falló!"
 SOMEONE_RECEIVES_DAMAGE = "recibe daño:"
 SOMEONE_FLED = "no pudo soportalo y salió corriendo!"
 SOMEONE_FLED_AND_FAILED = "...pero no logró escapar."
 SOMEONE_FLED_AND_SUCCEEDED = "...y escapó."
-SOMEONE_is_DEFEATED = "no puede continuar, y es derrotado!"
-PLAYER_USED_HEALING_MESSAGE_START = "Te curaste, recuperas"
-PLAYER_USED_HEALING_MESSAGE_HP = "HP"
-PLAYER_USED_MANA_MESSAGE_START = "Tomas una poción de mana, recuperas"
-PLAYER_USED_MANA_MESSAGE_SK = "SK"
+SOMEONE_IS_DEFEATED = "no puede continuar, y es derrotado!"
+PLAYER_HEALS_MESSAGE = "Te curaste, recuperas"
+PLAYER_CANNOT_HEAL_MESSAGE = "No puedes curarte, ya tienes la vida máxima"
+PLAYER_CANNOT_RESTORE_MANA_MESSAGE = "No puede recuperar mana, ya está al máximo"
+PLAYER_RESTORES_MANA_MESSAGE = "Tomas una poción de mana, recuperas"
+PLAYER_IS_OUT_OF_MANA = "No tienes maná suficiente para usar habilidades!"
+PLAYER_WINS = "\nVictoria!\n"
+PLAYER_EARNS_MONEY_START = "\nConseguiste"
+PLAYER_EARNS_MONEY_END = "monedas de oro"
+PLAYER_DIED= "\n\nHas muerto\n"
+GAME_OVER = " ~ Game Over ~ "
+GAME_OVER_SCREEN_OPTIONS = "\n1. Continuar\n2. Salir"
+WARNING_MESSAGE_INVALID_GAME_OVER_SCREEN_OPTION = "Opción no válida, por favor selecciona una de las opciones"
+ACRONYM_MESSAGE_HP = "HP"
+ACRONYM_MESSAGE_SK = "SK"
 BASE_ACC = 70
+RANDOM_ENEMY_HEALTH_FOR_COMMON_ITEMS_LOCATION = random.randint(75,150)
+RANDOM_ENEMY_HEALTH_FOR_UNCOMMON_ITEMS_LOCATION = random.randint(150,220)
+RANDOM_ENEMY_HEALTH_FOR_LEGENDARY_ITEMS_LOCATION = random.randint(250,325)
+RANDOM_ENEMY_DMG_FOR_COMMON_ITEMS_LOCATION = random.randint(15,40)
+RANDOM_ENEMY_DMG_FOR_UNCOMMON_ITEMS_LOCATION = random.randint(40,80)
+RANDOM_ENEMY_DMG_FOR_LEGENDARY_ITEMS_LOCATION = random.randint(100,150)
+ENEMY_NAMES = ["Slime Azul",
+               "Slime Rojo",
+               "Slime Verde",
+               "Slime Rosado",
+               "Ema el Duende",
+               "Rata Gigante",
+               "Araña Gigante",
+               "Planta Carnivora",
+               "Tortuga Puntiaguda",
+               "Kersh el ogro",
+               "Bandido asaltante",
+               "Pochorrongo el esqueleto"]
 
+WARNING_MESSAGE_INVALID_SPECIAL_ATTACK = "No existe esa habilidad, elige una de las habilidades que se muestran"
 
-# [ ARCHER ]
+# [ARCHER]
 SPECIAL_ATTACK_ARCHER = "\nHabilidad\n1. Lluvia de flechas\n"
 SPECIAL_ATTACK_DESC_ARCH = "Lluvia de flechas:\n+ Daña a un objetivo\n- Coste de Mana: Intermedio\n"
 
-# [Wizard]
+# [WIZARD]
 SPECIAL_ATTACK_WIZARD = "\nHabilidad:\n1.Bola de Fuego\n"
 SPECIAL_ATTACK_DESC_WIZ = "Bola de Fuego:\n+ Mete mucho daño a un objetivo\n- Coste Mana : Intermedio\n"
 
-# [Warrior]
+# [WARRIOR]
 SPECIAL_ATTACK_WARRIOR = "\nHabilidad:\n1.Multiple cortes\n"
 SPECIAL_ATTACK_DESC_WARR = "Multilple Cortes:\n+ Provoca un daño intermedio a un objetivo \n- Coste de Mana: Bajo\n"
 
@@ -183,7 +219,7 @@ SPECIAL_ATTACK_DESC_THIE = "Golpe Bajo:\n+ Provoca un daño intermedio a un obje
 SPECIAL_ATTACK_SORC = "\nHabilidad:\n1.Magia Control\n"
 SPECIAL_ATTACK_DESC_SORC = "Magia Control :\n+ Controla por un breve momento al enemigo haciendo que se lastime el mismo \n- Coste de Mana: Intermedio\n"
 
-# [Paladin]
+# [PALADIN]
 SPECIAL_ATTACK_PAL = "\nHabilidad\n1.Sentencia\n"
 SPECIAL_ATTACK_DESC_PAL = "Sentencia:\n+ Juzga al enemigo provocandole un daño con la espada sagrada \n- Coste Bajo de Mana\n"
 

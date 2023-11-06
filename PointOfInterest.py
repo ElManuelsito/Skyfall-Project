@@ -173,8 +173,10 @@ VengefulMountains.connected_locations = [Muldraugh]
 
 ForestOFMagicForageableArea.connected_locations = [ForestOFMagic]
 ForestOFMagicForageableArea.possible_items = Item.items_common
+
 DeepRockCavernsForageableArea.connected_locations = [DeepRockCaverns]
 DeepRockCavernsForageableArea.possible_items = Item.items_uncommon
+
 VengefulMountainsForageableArea.connected_locations = [VengefulMountains]
 VengefulMountainsForageableArea.possible_items = Item.items_legendary
 

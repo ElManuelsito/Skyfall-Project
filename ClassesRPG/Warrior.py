@@ -17,11 +17,11 @@ from Character import Character
 
 class Warrior(Character):
     def __init__(self, name):
-        super().__init__(name, health=275, armor=40, mana=25, str=20, agi=10, int=8, faith=6, acc=6, res_magic=2,
+        super().__init__(name, health=275, max_health=275, armor=40, mana=25, max_mana=25, str=20, agi=10, int=8, faith=6, acc=6, res_magic=2,
                          res_phys=10, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
-    def attackWithSkillA(self, enemy):  # Multiples Cortes
-        enemy.takeDamageFromPlayerSpecial(self)
+    def attackWithSkillA(self):  # Multiples Cortes
+        return True
 
     def getSpecialAttackOptions(self):
         return Constants.SPECIAL_ATTACK_WARRIOR

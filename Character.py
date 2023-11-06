@@ -22,12 +22,14 @@
 
 
 class Character:
-    def __init__(self, name, health, armor, mana, str, agi, int, faith,
+    def __init__(self, name, health, max_health, armor, mana, max_mana, str, agi, int, faith,
                  acc, res_magic, res_phys, money, lvl, exp, armor_items_on, weapon_items_on):
         self.name = name
         self.health = health
+        self.max_health = max_health
         self.armor = armor
         self.mana = mana
+        self.max_mana = max_mana
         self.str = str
         self.agi = agi
         self.int = int
@@ -43,6 +45,8 @@ class Character:
 
     def takeDamage(self, enemy):
         self.health = self.health - (enemy.dmg - (enemy.dmg * (self.armor / 200)))
+        if self.health <= 0:
+            return self.isDead()
 
-    def attackNormally(self, enemy):
-        enemy.takeDamage(self)
+    def isDead(self):
+        return True
