@@ -93,6 +93,7 @@ ElementaryCharity = Item("Caridad Elemental",
                    0,
                    "common")
 
+Items_common = [PotionHealingSmall,PotionManaSmall,BowNewborn,MiraculousHarp,SoulBlinder,HolySword,MagickBook,RapthaliaShield,PhoenixDagger,WolfSword,ElementaryCharity]
 
 # -------------------- Intermediate items (uncommon) --------------------
 
@@ -180,6 +181,8 @@ AvatarCharity = Item("Caridad Avatar",
                    0,
                    "uncommon")
 
+Items_uncommon = [ArmorBreastplateSilenthills,ArmorChaussesSilentHill,ArmorGauntletsSilentHill,DragonBow,HeavenlyHarp,HellishSoul,SwordofGod,DarkBook,FlameShield,SnakeDagger,HoundSword,AvatarCharity]
+
 # -------------------- Legendary items (rare) --------------------
 
 ValshBow = Item("Arco Valsh",
@@ -244,3 +247,5 @@ NaturalConnection = Item("Conexion Naturall",
                    42,
                    25,
                    "Legendary")
+
+Items_legendary = [ValshBow,ArchangelHarp,SoulLucifer,SwordBahvagraba,StephenStrangeBook,DensetsunoTate,TwilightDagger,ThunderSword,NaturalConnection]
