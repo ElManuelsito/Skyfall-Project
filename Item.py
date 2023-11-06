@@ -161,7 +161,7 @@ DarkBook = Item("Libro oscuro",
                    "weapon",
                    23,
                    0,
-                   "common")
+                   "uncommon")
 
 FlameShield = Item("Escudo de LLamas",
                    "Escudo con fuego dispuesto a proteger a los que aman",
@@ -211,63 +211,63 @@ ValshBow = Item("Arco Valsh",
                    "weapon",
                    30,
                    25,
-                   "Legendary")
+                   "legendary")
 
 ArchangelHarp = Item("Arpa Arcangel",
                    "Arpa del Angel Arcangel",
                    "weapon",
                    24,
                    25,
-                   "Legendary")
+                   "legendary")
 
 SoulLucifer = Item("Alma de Lucifer",
                    "Alama de lucifer,rey del inframundo",
                    "weapon",
                    40,
                    25,
-                   "Legendary")
+                   "legendary")
 
 SwordBahvagraba = Item("Espada de Bahvagraba",
                         "Una espada que alguna vez le perteneció a una criatura celestial.",
                         "weapon",
                         28,
                         25,
-                        "Legendary")
+                        "legendary")
 
 StephenStrangeBook = Item("Libro de Stephen Strange",
                    "Libro con las magias temporales capaces de cambiar la historia el cual se conoce",
                    "weapon",
                    29,
                    0,
-                   "Legendary")
+                   "legendary")
 
 DensetsunoTate = Item("Escudo legendario ",
                    "Arma legendaria que se encuentra en este mundo, que solo sera encontrada por un corazon puro",
                    "weapon",
                    24,
                    25,
-                   "Legendary")
+                   "legendary")
 
 TwilightDagger = Item("Daga Crespuscular ",
                    "Daga de gran calidad que se enceuntra en el intervalo de la salida de la puesta del sol",
                    "weapon",
                    35,
                    25,
-                   "Legendary")
+                   "legendary")
 
 ThunderSword = Item("Espada Trueno",
                    "Espada ligera y destructivo como el rayo, resplandece como uno entre los cielos grises",
                    "weapon",
                    38,
                    25,
-                   "Legendary")
+                   "legendary")
 
 NaturalConnection = Item("Conexion Naturall",
                    "Caridad que provoca que el usuario y la naturaleza se conecten siendo uno",
                    "weapon",
                    42,
                    25,
-                   "Legendary")
+                   "legendary")
 
 items_legendary = [ValshBow,
                    ArchangelHarp,
