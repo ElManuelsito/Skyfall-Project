@@ -20,12 +20,11 @@ class Warrior(Character):
         super().__init__(name, health=275, armor=40, mana=25, str=20, agi=10, int=8, faith=6, acc=6, res_magic=2,
                          res_phys=10, money=0, lvl=0, exp=0, armor_items_on=0, weapon_items_on=0)
 
-    def attackWithSkillA(self, enemy):
-        enemy.takeDamageFromPlayerSpecial(self) #Multiples Cortes
+    def attackWithSkillA(self, enemy):  # Multiples Cortes
+        enemy.takeDamageFromPlayerSpecial(self)
 
-    def getSpecialAttack(self):
-        return Constants.SPECIAL_ATTACKS_WARRIOR
+    def getSpecialAttackOptions(self):
+        return Constants.SPECIAL_ATTACK_WARRIOR
 
-    def getSpecialAttackDescription(self, option):
-        if option == 1:
-            return Constants.SPECIAL_ATTACK_A_DESC_WARR
+    def getSpecialAttackDescription(self):
+        return Constants.SPECIAL_ATTACK_DESC_WARR

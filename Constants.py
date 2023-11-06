@@ -153,39 +153,39 @@ BASE_ACC = 70
 
 # [ ARCHER ]
 SPECIAL_ATTACK_ARCHER = "\nHabilidad\n1. Lluvia de flechas\n"
-SPECIAL_ATTACK_A_DESC_ARCH = "Lluvia de flechas:\n+ Daña a un objetivo\n- Coste de Mana: Intermedio\n"
+SPECIAL_ATTACK_DESC_ARCH = "Lluvia de flechas:\n+ Daña a un objetivo\n- Coste de Mana: Intermedio\n"
 
 # [Wizard]
 SPECIAL_ATTACK_WIZARD = "\nHabilidad:\n1.Bola de Fuego\n"
-SPECIAL_ATTACK_A_DESC_WIZ = "Bola de Fuego:\n+ Mete mucho daño a un objetivo\n- Coste Mana : Intermedio\n"
+SPECIAL_ATTACK_DESC_WIZ = "Bola de Fuego:\n+ Mete mucho daño a un objetivo\n- Coste Mana : Intermedio\n"
 
 # [Warrior]
 SPECIAL_ATTACK_WARRIOR = "\nHabilidad:\n1.Multiple cortes\n"
-SPECIAL_ATTACK_A_DESC_WARR = "Multilple Cortes:\n+ Provoca un daño intermedio a un objetivo \n- Coste de Mana: Bajo\n"
+SPECIAL_ATTACK_DESC_WARR = "Multilple Cortes:\n+ Provoca un daño intermedio a un objetivo \n- Coste de Mana: Bajo\n"
 
 # [THIEF]
 SPECIAL_ATTACK_THIEF = "\nHabilidad\n1.Golpe bajo\n"
-SPECIAL_ATTACK_A_DESC_THIE = "Golpe Bajo:\n+ Provoca un daño intermedio a un objetivo golpeando en los puntos bajo \n- Coste de Mana: Bajo\n"
+SPECIAL_ATTACK_DESC_THIE = "Golpe Bajo:\n+ Provoca un daño intermedio a un objetivo golpeando en los puntos bajo \n- Coste de Mana: Bajo\n"
 
 # [SORCERER]
 SPECIAL_ATTACK_SORC = "\nHabilidad:\n1.Magia Control\n"
-SPECIAL_ATTACK_A_DESC_SORC = "Magia Control :\n+ Controla por un breve momento al enemigo haciendo que se lastime el mismo \n- Coste de Mana: Intermedio\n"
+SPECIAL_ATTACK_DESC_SORC = "Magia Control :\n+ Controla por un breve momento al enemigo haciendo que se lastime el mismo \n- Coste de Mana: Intermedio\n"
 
 # [Paladin]
 SPECIAL_ATTACK_PAL = "\nHabilidad\n1.Sentencia\n"
-SPECIAL_ATTACK_A_DESC_PAL = "Sentencia:\n+ Juzga al enemigo provocandole un daño con la espada sagrada \n- Coste Bajo de Mana\n"
+SPECIAL_ATTACK_DESC_PAL = "Sentencia:\n+ Juzga al enemigo provocandole un daño con la espada sagrada \n- Coste Bajo de Mana\n"
 
 # [NECROMANCER]
 SPECIAL_ATTACK_NEC = "\nHabilidad:\n1.Invocacion NO-MUERTO \n"
-SPECIAL_ATTACK_A_DESC_NEC = "Invoacion NO-MUERTO:\n+ Invoca personas sin vida para atacar a un objetivo \n- Coste de Mana :Intermedio\n"
+SPECIAL_ATTACK_DESC_NEC = "Invoacion NO-MUERTO:\n+ Invoca personas sin vida para atacar a un objetivo \n- Coste de Mana :Intermedio\n"
 
 # [TANK]
 SPECIAL_ATTACK_TANK = "\nHabilidad:\n1.Power up\n"
-SPECIAL_ATTACK_A_DESC_TANK = "Power UP:\n+ Hace que su ataque aumente \n- Coste de Mana: Intermedio \n"
+SPECIAL_ATTACK_DESC_TANK = "Power UP:\n+ Hace que su ataque aumente \n- Coste de Mana: Intermedio \n"
 
 # [BARD]
 SPECIAL_ATTACK_BARD = "\nHabilidad:\n1.Inspiracion \n"
-SPECIAL_ATTACK_A_DESC_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \n- Coste de Mana: Intermedio\n"
+SPECIAL_ATTACK_DESC_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \n- Coste de Mana: Intermedio\n"
 
 
 # print(COMBAT_OPTIONS)
