@@ -4,22 +4,27 @@
 # import Item
 # import os
 # import ClassesRPG.Archer as Cl_Archer
+import random
 
 # cualquier otra cosa que no sean estas 3 de abajo hay que borrarlas después lol
-from GameManager import GameManager
-Manager = GameManager()
-Manager.initializeGame()
-
+# from GameManager import GameManager
+# Manager = GameManager()
+# Manager.initializeGame()
+x = 2
+y = ["lol"]
+item_pool_common = ["anashe", 1337, (x, y)]
+print(random.randint(0,len(item_pool_common)))
 
 # os.remove("savefile.pickle")
 # Player = Cl_Archer.Archer("Manu")
-# player_info = {"weapon_1": Item.sword_bahvagraba,
-#                "weapon_2": False,
+# player_info = {"weapon_1": Item.BowNewborn,
 #                "helmet": False,
-#                "breastplate": Item.armor_breastplate_silenthills,
+#                "breastplate": False,
 #                "chausses": False,
 #                "gauntlets": False,
-#                "money": 0,
+#                "backpack_items": {"weapons": [],
+#                                   "potions": [],
+#                                   "armors": []},
 #                "location": None}
 #
 # with open("savefile.pickle", "wb") as f:

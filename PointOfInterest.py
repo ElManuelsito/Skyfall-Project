@@ -1,3 +1,6 @@
+import Item
+
+
 class PointOfInterest:
     def __init__(self, name,
                  description,
@@ -5,7 +8,8 @@ class PointOfInterest:
                  possible_npcs,
                  possible_events,
                  possible_items,
-                 connected_locations):
+                 connected_locations,
+                 classification):
         self.name = name
         self.description = description
         self.possible_enemies = possible_enemies
@@ -13,23 +17,22 @@ class PointOfInterest:
         self.possible_events = possible_events
         self.possible_items = possible_items
         self.connected_locations = connected_locations
-
-    def triggerEvent(self):
-        pass
+        self.classification = classification
 
 
 # -------------------- Villages (populated and safe areas) --------------------
 
 Muldraugh = PointOfInterest("Muldraugh",
                             "\nUn reino gobernado por familias corruptas desde milenio y niveles"
-                            " de crimenes que pondrían\nhasta a el Paladin más fuerte preguntandose si de "
+                            " de crimenes que pondrían\nhasta al Paladin más fuerte preguntándose si de "
                             "verdad vale la pena vivir aquí.\nAl menos, las mercancías no decepcionan... "
                             "si se tiene un puñado de lo que tiene el rey, claro.\n",
                             possible_enemies=None,
                             possible_npcs=[],
                             possible_events=[],
                             possible_items=None,
-                            connected_locations=[]
+                            connected_locations=[],
+                            classification="safe"
                             )
 Riverside = PointOfInterest("Riverside",
                             "\nUna pequeña villa con habitantes memorables y una hospitalidad no encontrada en"
@@ -41,7 +44,8 @@ Riverside = PointOfInterest("Riverside",
                             possible_npcs=[],
                             possible_events=[],
                             possible_items=None,
-                            connected_locations=[]
+                            connected_locations=[],
+                            classification="safe"
                             )
 
 
@@ -54,7 +58,8 @@ RiversideAlchemist = PointOfInterest("Todd el Alquimista",
                                      possible_npcs=None,
                                      possible_events=None,
                                      possible_items=[],
-                                     connected_locations=[]
+                                     connected_locations=[],
+                                     classification="shop"
                                      )
 RiversideBlacksmith = PointOfInterest("Howard el Herrero",
                                       "Un preciado herrero de la villa, joven,"
@@ -64,7 +69,8 @@ RiversideBlacksmith = PointOfInterest("Howard el Herrero",
                                       possible_npcs=None,
                                       possible_events=None,
                                       possible_items=[],
-                                      connected_locations=[]
+                                      connected_locations=[],
+                                      classification="shop"
                                       )
 MuldraughBlacksmith = PointOfInterest("Andre el Legendario Herrero",
                                       "Un maestro de su arte, no hay explorador o viajero que no lo conozca.\nSe dice"
@@ -76,7 +82,8 @@ MuldraughBlacksmith = PointOfInterest("Andre el Legendario Herrero",
                                       possible_npcs=None,
                                       possible_events=None,
                                       possible_items=[],
-                                      connected_locations=[]
+                                      connected_locations=[],
+                                      classification="shop"
                                       )
 
 
@@ -90,18 +97,40 @@ ForestOFMagic = PointOfInterest("Bosque de la Magia",
                                 possible_npcs=None,
                                 possible_events=[],
                                 possible_items=[],
-                                connected_locations=[]
+                                connected_locations=[],
+                                classification="unsafe"
                                 )
+ForestOFMagicForageableArea = PointOfInterest("Busqueda amplia de la zona",
+                                              "\nPuedes buscar al rededor del bosque y encontrar oro, objetos, y por"
+                                              " supuesto, compañia.\n",
+                                              possible_enemies=[],
+                                              possible_npcs=None,
+                                              possible_events=[],
+                                              possible_items=[],
+                                              connected_locations=[],
+                                              classification="searchable common"
+                                              )
 DeepRockCaverns = PointOfInterest("Cavernas de la Profunda Roca",
-                                  "\nuevas de hace mucho tiempo atrás, no es el lugar más seguro del planeta, pero "
+                                  "\nCuevas de hace mucho tiempo atrás, no es el lugar más seguro del planeta, pero "
                                   "quien se atreva a aventurarlo será recompensado.\nEs necesario atravesar las cuevas"
                                   " si se quiere llegar al reino de Muldraugh.\n",
                                   possible_enemies=[],
                                   possible_npcs=None,
                                   possible_events=[],
                                   possible_items=[],
-                                  connected_locations=[]
+                                  connected_locations=[],
+                                  classification="unsafe"
                                   )
+DeepRockCavernsForageableArea = PointOfInterest("Busqueda amplia de la zona",
+                                              "\nPuedes buscar al rededor de la cueva y encontrar oro, "
+                                              "objetos, y por supuesto, compañia.\n",
+                                                possible_enemies=[],
+                                                possible_npcs=None,
+                                                possible_events=[],
+                                                possible_items=[],
+                                                connected_locations=[],
+                                                classification="searchable uncommon"
+                                                )
 VengefulMountains = PointOfInterest("Montañas Vengativas",
                                     "\nAltas montañas que no perdonan incluso al más bondadoso de los juglares.\nGran"
                                     " peligro acecha por estas partes, pero quien salga vivo volverá con riquezas "
@@ -110,8 +139,18 @@ VengefulMountains = PointOfInterest("Montañas Vengativas",
                                     possible_npcs=None,
                                     possible_events=[],
                                     possible_items=[],
-                                    connected_locations=[]
+                                    connected_locations=[],
+                                    classification="unsafe"
                                     )
+VengefulMountainsForageableArea = PointOfInterest("Busqueda amplia de la zona",
+                                                  "\nPuedes buscar al rededor de la cueva y encontrar oro, "
+                                                  "objetos, y por supuesto, compañia.\n",
+                                                  possible_enemies=[],
+                                                  possible_npcs=None,possible_events=[],
+                                                  possible_items=[],
+                                                  connected_locations=[],
+                                                  classification="searchable legendary"
+                                                  )
 
 # -------------------- Establishing Connections Between POIs --------------------
 
@@ -124,11 +163,20 @@ Muldraugh.connected_locations = [DeepRockCaverns,
                                  MuldraughBlacksmith,
                                  VengefulMountains]
 
-ForestOFMagic.connected_locations = [Riverside]
+ForestOFMagic.connected_locations = [Riverside,
+                                     ForestOFMagicForageableArea]
 
 DeepRockCaverns.connected_locations = [Riverside,
                                        Muldraugh]
 
 VengefulMountains.connected_locations = [Muldraugh]
+
+ForestOFMagicForageableArea.connected_locations = [ForestOFMagic]
+ForestOFMagicForageableArea.possible_items = Item.items_common
+DeepRockCavernsForageableArea.connected_locations = [DeepRockCaverns]
+DeepRockCavernsForageableArea.possible_items = Item.items_uncommon
+VengefulMountainsForageableArea.connected_locations = [VengefulMountains]
+VengefulMountainsForageableArea.possible_items = Item.items_legendary
+
 
 

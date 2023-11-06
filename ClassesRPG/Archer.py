@@ -15,3 +15,4 @@ class Archer(Character):
 
     def getSpecialAttackDescription(self, option):
         return Constants.SPECIAL_ATTACK_DESC_ARCH
+

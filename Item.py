@@ -5,73 +5,276 @@ class Item:
                  item_type,
                  dmg,
                  protection,
-                 effect_range,
-                 effect_duration,
-                 class_bonus,
                  rarity):
         self.name = name
         self.description = description
         self.item_type = item_type
         self.dmg = dmg
         self.protection = protection
-        self.effect_range = effect_range
-        self.effect_duration = effect_duration
-        self.class_bonus = class_bonus
         self.rarity = rarity
 
 
 # -------------------- Starter items (common) --------------------
 
-potion_healing_small = Item("Poción de curación (pequeña)",
+PotionHealingSmall = Item("Poción de curación (pequeña)",
                             "Evidentemente, no podrás curarte de todos tus males con una sola.",
                             "potion",
                             20,
                             0,
-                            None,
-                            None,
-                            "Cualquiera",
                             "common")
-bow_newborn = Item("Arco del Recién Nacido",
+
+PotionManaSmall = Item("Poción de Mana (pequeña)",
+                            "Posicion de mana que se utiliza para las habilidades.",
+                            "potion",
+                            20,
+                            0,
+                            "common")
+
+BowNewborn = Item("Arco del Recién Nacido",
                    "Todos tenemos que empezar en algún lado",
-                   "bow",
+                   "weapon",
                    18,
                    0,
-                   None,
-                   None,
-                   "Arquero y Ladrón",
                    "common")
+
+MiraculousHarp = Item("Arpa Milagrosa",
+                   "Con musica todo es mejor",
+                   "weapon",
+                   14,
+                   0,
+                   "common")
+
+SoulBlinder = Item("Segador de Alma",
+                   "Ven que yo cuidare tu alma,no como tu ex",
+                   "weapon",
+                   20,
+                   0,
+                   "common")
+
+HolySword = Item("Espada Sagrada",
+                   "Con la Guia de Dios al camino de la victoria",
+                   "weapon",
+                   16,
+                   0,
+                   "common")
+
+MagickBook = Item("Libro Magico",
+                   "Libro de la vida magica",
+                   "weapon",
+                   23,
+                   0,
+                   "common")
+
+RapthaliaShield = Item("Raphatalia",
+                   "Yo sere tu hogar",
+                   "weapon",
+                   10,
+                   0,
+                   "common")
+
+PhoenixDagger = Item("Daga Fénix",
+                   "Pequeño pero rapido, el silencio lo es todo",
+                   "weapon",
+                   18,
+                   0,
+                   "common")
+
+WolfSword = Item("Espada de lobo",
+                   "Fiel y compañera de un Guerrero en la vida",
+                   "weapon",
+                   20,
+                   0,
+                   "common")
+
+ElementaryCharity = Item("Caridad Elemental",
+                   "Caridad con la energia elemental del mundo",
+                   "weapon",
+                   22,
+                   0,
+                   "common")
+
+items_common = [PotionHealingSmall,
+                PotionManaSmall,
+                BowNewborn,
+                MiraculousHarp,
+                SoulBlinder,
+                HolySword,
+                MagickBook,
+                RapthaliaShield,
+                PhoenixDagger,
+                WolfSword,
+                ElementaryCharity]
 
 # -------------------- Intermediate items (uncommon) --------------------
 
-armor_breastplate_silenthills = Item("Pechera de las Colinas Silenciosa",
-                                     "Es mejor no usarla fuera de combate, los gritos que emite se hacen cada vez más "
-                                     "fuerte...",
-                                     "breastplate",
+ArmorBreastplateSilenthills = Item("Pechera de las Colinas Silenciosa",
+                                     "Los gritos de agonia hizo que el silencio sea duro como el hierro",
+                                     "armor",
                                      0,
                                      20,
-                                     None,
-                                     None,
-                                     "Cualquiera",
                                      "uncommon")
+
+ArmorGauntletsSilentHill = Item("Guantes de las Colinas Silenciosa",
+                                     "Estos guantes se endureciron de tantos lamentos y guardan un secreto en su silencio",
+                                     "armor",
+                                     0,
+                                     20,
+                                     "uncommon")
+
+ArmorChaussesSilentHill = Item("Botas de las Colinas Silenciosa",
+                                     "El caminar de lamentos ha endurecido su material estando en silencio su sufrimiento ",
+                                     "armor",
+                                     0,
+                                     20,
+                                     "uncommon")
+
+DragonBow = Item("Arco Dragon",
+                   "Fuerte como la piel del dragon y fuerte como uno",
+                   "weapon",
+                   25,
+                   20,
+                   "uncommon")
+
+HeavenlyHarp = Item("Arpa Celestial",
+                   "Arpa dado por los mismo angeles",
+                   "weapon",
+                   18,
+                   20,
+                   "uncommon")
+
+HellishSoul = Item("Alma Infernal",
+                   "Alama poseida por lucifer para el terror en la tierra",
+                   "weapon",
+                   30,
+                   0,
+                   "uncommon")
+
+SwordofGod = Item("Espada de Dios",
+                   "Con la fuerza de Dios dispuesta en una espada ",
+                   "weapon",
+                   20,
+                   0,
+                   "uncommon")
+
+DarkBook = Item("Libro oscuro",
+                   "Libro con las magias prohibidas,con miedo a ser revelados",
+                   "weapon",
+                   23,
+                   0,
+                   "common")
+
+FlameShield = Item("Escudo de LLamas",
+                   "Escudo con fuego dispuesto a proteger a los que aman",
+                   "weapon",
+                   15,
+                   0,
+                   "uncommon")
+
+SnakeDagger = Item("Daga serpiente",
+                   "Daga muy filosa pero y silenciosa",
+                   "weapon",
+                   25,
+                   0,
+                   "uncommon")
+
+HoundSword = Item("Espada Sabueso",
+                   "Espada lista para la guerra sin miedo a morir",
+                   "weapon",
+                   28,
+                   0,
+                   "uncommon")
+
+AvatarCharity = Item("Caridad Avatar",
+                   "Caridad con los elementos conectado con la naturaleza rebozando de su energia al cien",
+                   "weapon",
+                   32,
+                   0,
+                   "uncommon")
+
+items_uncommon = [ArmorBreastplateSilenthills,
+                  ArmorChaussesSilentHill,
+                  ArmorGauntletsSilentHill,
+                  DragonBow,
+                  HeavenlyHarp,
+                  HellishSoul,
+                  SwordofGod,
+                  DarkBook,
+                  FlameShield,
+                  SnakeDagger,
+                  HoundSword,
+                  AvatarCharity]
 
 # -------------------- Legendary items (rare) --------------------
 
-sword_bahvagraba = Item("Espada de Bahvagraba",
-                        "Una espada que alguna vez le perteneció a una criatura celestial."
-                        " Se dice que el dueño aún deambula por estas tierras, comiendo duraznos.",
-                        "weapon",
-                        20,
-                        None,
-                        None,
-                        None,
-                        "Guerrero",
-                        "rare")
-shield_kurt = Item("Escudo de Kurt",
-                   "Forjado durante un concierto, es capaz de protegerte de casi todo, CASI todo.",
-                   "shield",
-                   9,
+ValshBow = Item("Arco Valsh",
+                   "Arco profundamente ligero pero fuerte y preciso,confiable en los momentos decisivo",
+                   "weapon",
                    30,
-                   None,
-                   None,
-                   "Guerrero, Paladin y Tanque",
-                   "rare")
+                   25,
+                   "Legendary")
+
+ArchangelHarp = Item("Arpa Arcangel",
+                   "Arpa del Angel Arcangel",
+                   "weapon",
+                   24,
+                   25,
+                   "Legendary")
+
+SoulLucifer = Item("Alma de Lucifer",
+                   "Alama de lucifer,rey del inframundo",
+                   "weapon",
+                   40,
+                   25,
+                   "Legendary")
+
+SwordBahvagraba = Item("Espada de Bahvagraba",
+                        "Una espada que alguna vez le perteneció a una criatura celestial.",
+                        "weapon",
+                        28,
+                        25,
+                        "Legendary")
+
+StephenStrangeBook = Item("Libro de Stephen Strange",
+                   "Libro con las magias temporales capaces de cambiar la historia el cual se conoce",
+                   "weapon",
+                   29,
+                   0,
+                   "Legendary")
+
+DensetsunoTate = Item("Escudo legendario ",
+                   "Arma legendaria que se encuentra en este mundo, que solo sera encontrada por un corazon puro",
+                   "weapon",
+                   24,
+                   25,
+                   "Legendary")
+
+TwilightDagger = Item("Daga Crespuscular ",
+                   "Daga de gran calidad que se enceuntra en el intervalo de la salida de la puesta del sol",
+                   "weapon",
+                   35,
+                   25,
+                   "Legendary")
+
+ThunderSword = Item("Espada Trueno",
+                   "Espada ligera y destructivo como el rayo, resplandece como uno entre los cielos grises",
+                   "weapon",
+                   38,
+                   25,
+                   "Legendary")
+
+NaturalConnection = Item("Conexion Naturall",
+                   "Caridad que provoca que el usuario y la naturaleza se conecten siendo uno",
+                   "weapon",
+                   42,
+                   25,
+                   "Legendary")
+
+items_legendary = [ValshBow,
+                   ArchangelHarp,
+                   SoulLucifer,
+                   SwordBahvagraba,
+                   StephenStrangeBook,
+                   DensetsunoTate,
+                   TwilightDagger,
+                   ThunderSword,
+                   NaturalConnection]

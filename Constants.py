@@ -5,34 +5,13 @@
 #        "2- Etc."
 # MAX_PLAYERS = 5
 
-# -- Testeando pickle --
-# import pickle
-#
-# player_info = {"weapon_1": False,
-#                "weapon_2": False,
-#                "helmet": False,
-#                "breastplate": False,
-#                "chausses": False,
-#                "gauntlets": False,
-#                "money": 0,
-#                "location": None}
-# with open("savefile.pickle", "wb") as f:
-#     pickle.dump(player_info, f, protocol=0)
-# f.close()
-#
-# with open("savefile.pickle", "rb") as f:
-#     player_info = pickle.load(f)
-# f.close()
-# print(player_inv.items())
-
-# -----
-
 
 # -------------------- Menu Related --------------------
 # [ PLAYER INTERACTION WITH SYSTEM]
 
 PLAYER_PROMPT_OPTION = "Opción: "
 PLAYER_PROMPT_NAME = "Nombre: "
+PLAYER_PROMPT_ITEM_NUMBER = "Item: "
 PRESS_ENTER_TO_CONTINUE = "\nPresiona Enter para continuar...\n"
 PRESS_ENTER_TO_RETURN = "\nPresiona Enter para volver...\n"
 
@@ -40,13 +19,35 @@ PRESS_ENTER_TO_RETURN = "\nPresiona Enter para volver...\n"
 WELCOMING_MESSAGE = "\n\n                    ~ Skyfall ~\nSelecciona una opción ingresando su número por teclado.\n"
 MAIN_MENU_OPTIONS = "1. Nuevo juego\n2. Continuar\n3. Instrucciones\n4. Salir\n"
 WARNING_MESSAGE_INVALID_MAIN_MENU_OPTION = "No existe esa opción! Por favor selecciona una de las opciones dadas."
+WARNING_MESSAGE_CHOICE_IS_NOT_NUMERIC = "Por favor ingresa solamente números."
 MAIN_MENU_MESSAGE_SAVEFILE_ALREADY_EXISTS = "Advertencia! Ya existe un archivo de guardado!\nSi eliges continuar ahora se eliminará tu progreso y tendrás que comenzar desde cero.\n"
 MAIN_MENU_MESSAGE_SAVEFILE_DELETE_CONFIRMATION = "¿Deseas continuar? (si/no)"
 MAIN_MENU_MESSAGE_SAVEFILE_DELETED = "\nEl archivo a sido eliminado\n"
 MAIN_MENU_MESSAGE_SAVEFILE_NOT_DELETED_GOING_BACK_TO_MENU = "\nVolviendo al menu principal..."
-MAIN_MENU_MESSAGE_GAME_LOADING = "Cargando mundo..."
+MAIN_MENU_MESSAGE_GAME_LOADING = "\n\n\n\nCargando mundo..."
 PLAYER_PROMPT_SET_FOR_YES = {"s", "S", "si", "sí", "SI", "SÍ", "Si", "Sí", "sI", "sÍ", "y", "Y", "yes", "Yes", "YES"}   # estructura de datos Set, incluye posibilidades para la respuesta del usuario "si"
 PLAYER_PROMPT_SET_FOR_NO = {"no", "No", "NO", "nO", "n", "N"}                                                           # misma estructura, pero para "No"
+PLAYER_INVENTORY_MESSAGE = "Actualmente tienes estos items:\n"
+PLAYER_INVENTORY_MESSAGE_WEAPONS = "\nArmas:"
+PLAYER_INVENTORY_MESSAGE_POTIONS = "\nPociones:"
+PLAYER_INVENTORY_MESSAGE_ARMORS = "\nArmaduras:"
+PLAYER_INVENTORY_MESSAGE_NO_ITEMS = "No tienes ningún item de este tipo"
+PLAYER_INVENTORY_MESSAGE_ACTIONS = "Decide qué quieres hacer (seleccionar/volver)"
+WARNING_MESSAGE_INVALID_INVENTORY_ACTION = "Por favor solo ingresa \"seleccionar\" o \"volver\""
+WARNING_MESSAGE_INVALID_INVENTORY_ITEM_ACTION = "Por favor solo ingresa \"descartar\", \"equipar\" o \"usar\""
+PLAYER_INVENTORY_ACTION_SET_SELECT = {"seleccionar"}
+PLAYER_INVENTORY_ACTION_SET_RETURN = {"volver"}
+PLAYER_INVENTORY_ACTION_SET_DISCARD = {"descartar"}
+PLAYER_INVENTORY_ACTION_SET_EQUIP = {"equipar"}
+PLAYER_INVENTORY_ACTION_SET_USE = {"usar"}
+PLAYER_INVENTORY_SELECTED_ITEM = "Item seleccionado:"
+PLAYER_INVENTORY_SELECTED_ITEM_OPTIONS = "¿Qué deseas hacer con él? (descartar/equipar/usar)"
+PLAYER_INVENTORY_ALREADY_HAS_WEAPON = "Ya tienes un arma equipada, ¿quieres reemplazarla? (si/no)"
+PLAYER_INVENTORY_NEW_WEAPON_EQUIPPED = "Te has equipado el arma seleccionada"
+PLAYER_INVENTORY_ALREADY_HAS_ARMOR = "Ya tienes eso puesto, ¿Quieres reemplazarlo?"
+PLAYER_INVENTORY_NEW_ARMOR_EQUIPPED = "Te has equipado la nueva armadura"
+PLAYER_INVENTORY_CANNOT_EQUIP_ITEM = "No puedes equiparte eso!"
+PLAYER_INVENTORY_ITEM_WAS_DISCARDED = "Has descartado:"
 TIME_BETWEEN_MESSAGES = 0.85
 TIME_BETWEEN_WARNINGS = 3.5
 
@@ -126,15 +127,22 @@ INTRO_MESSAGE_RIVERSIDE = "Comienza un nuevo día, te levantas de tu pequeña y 
                           " y lo único que hay en tu bolso es polvo y un vacío que representa tu voluntad de seguir en" \
                           " este estado deplorable.\n\nDecides ponerle un fin a este estilo de vida, haciendo el " \
                           "último llamado: salir adelante o morir. Recoges tus únicas pertenencias, y emprendes viaje." \
-                          "\n\n"
+                          "\n"
 INTRO_MESSAGE_MULDRAUGH = "Un punzante dolor te despierta de tu sueño repentino, todo tu alrededor parece dar vueltas" \
                           " y no logras alcanzar a comprender tu situación.\nTratas de recomponerte, y luego de un rato" \
                           " comienzas a recordar, esos bandidos se llevaron todo!\n\nSabías que venir a este reino no" \
                           " era buena idea, pero la invitación al Cuarto Real era muy tentadora para no aceptarla." \
-                          " Recoges lo primero que encuentras entre la basura, y emprendes viaje para vengarte de " \
-                          "aquellos que te hicieron daño.\n\n"
-WORLD_PLAYER_IS_IN_POI = "Ahora mismo te encuentras en:"
+                          "\nRecoges lo primero que encuentras entre la basura, y emprendes viaje para vengarte de " \
+                          "aquellos que te hicieron daño.\n"
 
+WORLD_PLAYER_DECIDE_WHAT_TO_DO = "Decide qué hacer:\n\n1. Viajar\n2. Inspeccionarse\n3. Guardar y salir\n"
+WORLD_PLAYER_IS_IN_POI = "Ahora mismo te encuentras en:"
+WORLD_AVAILABLE_POI = "Lugares disponibles:"
+WORLD_TRAVEL_CONFIRMATION = "¿Deseas ir aquí? (si/no)"
+WORLD_TRAVEL_GOING_TO_PLACE = "\nEstas en camino a:"
+WARNING_MESSAGE_INVALID_TRAVEL_CHOICE = "No existe ese lugar, por favor selecciona una de las opciones."
+WORLD_FORAGE_ITEM_FOUND = "\nHas encontrado algo! Encontraste:"
+WORLD_FORAGE_NO_ITEM_FOUND = "\nNo has encontrado nada..."
 
 # -------------------- Combat Related --------------------
 # [ GENERAL OPTIONS & MESSAGES ]
@@ -148,6 +156,10 @@ SOMEONE_FLED = "no pudo soportalo y salió corriendo!"
 SOMEONE_FLED_AND_FAILED = "...pero no logró escapar."
 SOMEONE_FLED_AND_SUCCEEDED = "...y escapó."
 SOMEONE_is_DEFEATED = "no puede continuar, y es derrotado!"
+PLAYER_USED_HEALING_MESSAGE_START = "Te curaste, recuperas"
+PLAYER_USED_HEALING_MESSAGE_HP = "HP"
+PLAYER_USED_MANA_MESSAGE_START = "Tomas una poción de mana, recuperas"
+PLAYER_USED_MANA_MESSAGE_SK = "SK"
 BASE_ACC = 70
 
 
@@ -186,12 +198,3 @@ SPECIAL_ATTACK_DESC_TANK = "Power UP:\n+ Hace que su ataque aumente \n- Coste de
 # [BARD]
 SPECIAL_ATTACK_BARD = "\nHabilidad:\n1.Inspiracion \n"
 SPECIAL_ATTACK_DESC_BARD = "Ispiracion:\n+ Sube los stat de si mismo inspirandose \n- Coste de Mana: Intermedio\n"
-
-
-# print(COMBAT_OPTIONS)
-# input(USER_PROMPT)
-# print(COMMON_ATTACKS_ARCHER)
-# input(USER_PROMPT)
-
-# with open("savefile.pickle", "rb") as f:
-#     player_info = pickle.load()
