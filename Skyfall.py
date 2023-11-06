@@ -7,13 +7,10 @@
 import random
 
 # cualquier otra cosa que no sean estas 3 de abajo hay que borrarlas después lol
-# from GameManager import GameManager
-# Manager = GameManager()
-# Manager.initializeGame()
-x = 2
-y = ["lol"]
-item_pool_common = ["anashe", 1337, (x, y)]
-print(random.randint(0,len(item_pool_common)))
+from GameManager import GameManager
+Manager = GameManager()
+Manager.initializeGame()
+
 
 # os.remove("savefile.pickle")
 # Player = Cl_Archer.Archer("Manu")
